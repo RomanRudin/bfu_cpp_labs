@@ -2,13 +2,24 @@
 #include <sstream>
 #include <string>
 
+char toLower(char sym) {
+	std::cout << sym << '\t' << (int)sym << std::endl;
+	if (((int)sym >= -64) && ((int)sym <= -33)) {
+		return (char)(sym + 32);
+	}
+}
+
 int main()
 {
 	setlocale(LC_ALL, "Rus");
 
 	const int vowelsLen = 19;
 	const int len = 2000;
-	std::string input = "оно не хочет умирать";
+	std::string input = "Он не хочет умирать";
+	for (int i = 0; i < input.length(); i++) {
+		input[i] = toLower(input[i]);
+	}
+	std::cout << input << std::endl;
 	const char vowels[vowelsLen]{ 'А', 'а', 'Е', 'е', 'Ё', 'ё', 'И', 'и', 'О', 'о', 'У', 'у', 'ы',  'Э', 'э', 'Ю', 'ю',  'Я', 'я' };
 	bool flag = true;
 	std::string answer[len];

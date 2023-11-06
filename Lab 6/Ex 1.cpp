@@ -2,6 +2,14 @@
 #include <fstream>
 #include <string>
 
+void toLower(std::string& word) {
+	for (int i = 0; i < word.length(); i++) {
+		if (((int)word[i] >= -64) && ((int)word[i] <= -33)) {
+			word[i] = (char)(word[i] + 32);
+		}
+	}
+}
+
 int main()
 {
 	setlocale(LC_ALL, "Rus");
@@ -9,7 +17,7 @@ int main()
 
 	std::string words[N];
 	int wordsCounter = 1;
-	char letter = 'À';
+	char letter = 'à';
 	std::ifstream in("input1.txt");
 	std::ofstream out("output1.txt");
 
@@ -21,6 +29,7 @@ int main()
 	while (!in.eof()) {
 		std::string currentWord;
 		in >> currentWord;
+		toLower(currentWord);
 		if (currentWord[0] == letter) {
 			for (int i = 0; i < wordsCounter; i++) {
 				if (currentWord == words[i]) {
