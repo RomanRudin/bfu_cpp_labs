@@ -20,7 +20,7 @@ int main()
 		input[i] = toLower(input[i]);
 	}
 	std::cout << input << std::endl;
-	const char vowels[vowelsLen]{ 'À', 'à', 'Å', 'å', '¨', '¸', 'È', 'è', 'Î', 'î', 'Ó', 'ó', 'û',  'İ', 'ı', 'Ş', 'ş',  'ß', 'ÿ' };
+	const char vowels[vowelsLen]{ 'à', 'å', '¸', 'è', 'î', 'ó', 'û', 'ı', 'ş', 'ÿ' };
 	bool flag = true;
 	std::string answer[len];
 	float sorter[len];
