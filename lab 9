@@ -1,1 +1,232 @@
+#include <iostream>
+#include <cmath>
 
+struct Node {
+    int val;
+    Node* next;
+    Node* previous;
+};
+
+struct intList {
+    Node* entrance;
+
+
+    Node* getElementByIndex(int index) { //Ready
+        if (isEmpty()) throw;
+        if (index >= 0) {
+            Node* current = entrance->next;
+            int counter = index;
+            while (counter != 0) {
+                if (current == entrance) {
+                    counter++;
+                }
+                current = current->next;
+                counter--;
+            }
+            return current;
+        }
+
+        Node* current = entrance->previous;
+        int counter = index;
+        while (counter != -1) {
+            if (current == entrance) {
+                counter--;
+            }
+            current = current->previous;
+            counter++;
+        }
+        return current;
+    }
+
+
+    int elem(int index) { //Ready
+        return getElementByIndex(index)->val;
+    }
+
+
+    void print() { //Ready
+        if (isEmpty()) return;
+        Node* current = entrance->next;
+        while (current != entrance) {
+            std::cout << current->val << "\t";
+            current = current->next;
+        }
+        std::cout << std::endl;
+        return;
+    }
+
+
+    int length() { //Ready
+        if (isEmpty()) return 0;
+        int counter = 0;
+        Node* current = entrance->next;
+        while (current != entrance) {
+            counter++;
+            current = current->next;
+        }
+        return counter;
+    }
+
+
+    bool isEmpty() { //Ready
+        return entrance->next == nullptr;
+    }
+
+
+    void appendLeft(int value) { //Ready
+        Node* elem = new Node();
+        elem->val = value;
+        if (isEmpty()) {
+            elem->next = entrance;
+            elem->previous = entrance;
+            entrance->next = elem;
+            entrance->previous = elem;
+            return;
+        }
+        elem->previous = entrance;
+        elem->next = entrance->next;
+        entrance->next->previous = elem;
+        entrance->next = elem;
+        return;
+    }
+
+
+    void appendRight(int value) { //Ready
+        Node* elem = new Node();
+        elem->val = value;
+        if (isEmpty()) {
+            elem->next = entrance;
+            elem->previous = entrance;
+            entrance->next = elem;
+            entrance->previous = elem;
+            return;
+        }
+        elem->previous = entrance->previous;
+        elem->next = entrance;
+        entrance->previous->next = elem;
+        entrance->previous = elem;
+        return;
+    }
+
+
+    void pop(int index) { //Ready
+        if ((index == 0) || (index == length() - 1) || (index == -1) || (index == -length())) {
+            getElementByIndex(index - 1)->next = entrance;
+            getElementByIndex(index + 1)->previous = entrance;
+            return;
+        }
+        getElementByIndex(index - 1)->next = getElementByIndex(index + 1);
+        getElementByIndex(index + 1)->previous = getElementByIndex(index - 1);
+        return;
+    }
+
+
+    void duplicate(int index) { //Ready
+        if ((index != -1) || (length() == 1)) {
+
+        }
+        Node* elem = getElementByIndex(index);
+        Node* nextelem = getElementByIndex(index + 1);
+        Node* duplicated = new Node();
+        duplicated->val = elem->val;
+        duplicated->previous = elem;
+        duplicated->next = nextelem;
+        elem->next = duplicated;
+        nextelem->previous = duplicated;
+        return;
+    }
+
+
+    void swap(int index1, int index2) {
+        if (index1 == index2) return;
+        if (index2 < index1) {
+            int swap = index2;
+            index2 = index1;
+            index1 = swap;
+        }
+
+        Node* swap1 = getElementByIndex(index1);
+        Node* swap2 = getElementByIndex(index2);
+        int temp = swap1->val;
+
+        swap1->val = swap2->val;
+        swap2->val = temp;
+        return;
+    }
+};
+
+bool isPrimary(int num) {
+    for (int i = std::sqrt(num) + 1; i > 1; i--) {
+        if (num % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int getFirstDigit(int value){
+    int num = value;
+    while (num > 9) {
+        num /= 10;
+    }
+    return num;
+}
+
+int main()
+{
+    int length;
+    std::cout << "Please, input the length of the sequence:" << std::endl;
+    std::cin >> length;
+
+    std::cout << "Please, input elements of the sequence:" << std::endl;
+    intList* list = new intList();
+    Node* root = new Node();
+    root->next = nullptr;
+    root->val = -1;
+    root->previous = nullptr;
+    list->entrance = root;
+    for (int i = 0; i < length; i++) {
+        int input;
+        std::cin >> input;
+        list->appendRight(input);
+    }
+    std::cout << "The answer is:" << std::endl;
+
+    bool startsWithThree = false;
+    for (int i = 0; i < length - 1; i++) {
+        if (getFirstDigit(list->elem(i)) == 3) {
+            startsWithThree = true;
+            break;
+        }
+    }
+
+    if (!startsWithThree) {
+        for (int i = 0; i < length - 1; i++) {
+            for (int j = i + 1; j < length; j++) {
+                if (list->elem(i) % 10 < list->elem(j) % 10) {
+                    list->swap(j, i);
+                }
+            }
+        }
+        list->print();
+        return 1;
+    }
+
+    int len = list->length();
+    int counter = 0;
+     while (counter < len) {
+         if ((list->elem(counter) % 2 == 0) && (list->elem(counter) != 2)) {
+             list->pop(counter);
+             len--;
+             counter--;
+         }
+         else if (isPrimary(list->elem(counter))) {
+             list->duplicate(counter);
+             len++;
+             counter++;
+         }
+         counter++;
+    }
+    list->print();
+    return 1;
+}
