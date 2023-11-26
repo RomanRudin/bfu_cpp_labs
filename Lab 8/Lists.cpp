@@ -110,82 +110,9 @@ struct intList {
         Node* swap1 = getElementByIndex(index1);
         Node* swap2 = getElementByIndex(index2);
 
-        std::cout << "swapping " << swap1->val << " and " << swap2->val << std::endl;
-
-        if ((index2 - index1) == 1) {
-            if (index1 == 0) {
-                Node* postswap2 = getElementByIndex(index2 + 1);
-                first = swap2;
-                swap2->next = swap1;
-                swap1->next = postswap2;
-                return;
-            }
-            if (index2 == len) {
-                Node* preswap1 = getElementByIndex(index1 - 1);
-                preswap1->next = swap2;
-                swap2->next = swap1;
-                swap1->next = nullptr;
-                last = swap1;
-                return;
-            }
-            if ((index1== 0) && (index2 == len)) {
-                first = swap2;
-                swap2->next = swap1;
-                last = swap1;
-                return;
-            }
-            if ((index1 != 0) && (index2 != len)) {
-                Node* preswap1 = getElementByIndex(index1 - 1);
-                Node* postswap2 = getElementByIndex(index2 + 1);
-                preswap1->next = swap2;
-                swap2->next = swap1;
-                swap1->next = postswap2;
-                return;
-            }
-        }
-        else {
-            if (index1 == 0) {
-                Node* postswap1 = getElementByIndex(index1 + 1);
-                Node* preswap2 = getElementByIndex(index2 - 1);
-                Node* postswap2 = getElementByIndex(index2 + 1);
-                first = swap2;
-                swap2->next = postswap1;
-                preswap2->next = swap1;
-                swap1->next = postswap2;
-                return;
-            }
-            if (index2 == len) {
-                Node* preswap1 = getElementByIndex(index1 - 1);
-                Node* postswap1 = getElementByIndex(index1 + 1);
-                Node* preswap2 = getElementByIndex(index2 - 1);
-                preswap1->next = swap2;
-                swap2->next = postswap1;
-                preswap2->next = swap1;
-                swap1->next = nullptr;
-                last = swap1;
-                return;
-            }
-            if ((index1 == 0) && (index2 == len)) {
-                Node* postswap1 = getElementByIndex(index1 + 1);
-                Node* preswap2 = getElementByIndex(index2 - 1);
-                first = swap2;
-                swap2->next = postswap1;
-                preswap2->next = swap1;
-                last = swap1;
-                return;
-            }
-            if ((index1 != 0) && (index2 != len)) {
-                Node* preswap1 = getElementByIndex(index1 - 1);
-                Node* postswap1 = getElementByIndex(index1 + 1);
-                Node* preswap2 = getElementByIndex(index2 - 1);
-                Node* postswap2 = getElementByIndex(index2 + 1);
-                preswap1->next = swap2;
-                swap2->next = postswap1;
-                preswap2->next = swap1;
-                swap1->next = postswap2;
-                return;
-            }
-        }
+        int temp = swap1->val;
+        swap1->val = swap2->val;
+        swap2->val = temp;
     }
 };
 
