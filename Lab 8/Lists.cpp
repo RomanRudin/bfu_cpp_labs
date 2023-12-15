@@ -84,8 +84,6 @@ struct intList {
 
 
     void duplicate(int index) {
-        if (index < 0) index += length();
-        if (index < 0) index += length();
         Node* elem = getElementByIndex(index);
         Node* duplicated = new Node();
         duplicated->val = elem->val;
@@ -95,8 +93,6 @@ struct intList {
 
 
     void swap(int index1, int index2) {
-        if (index1 < 0) index1 += length();
-        if (index2 < 0) index2 += length();
         if (index1 < 0) throw;
         if (index2 < 0) throw;
         if (index1 == index2) return;
@@ -116,7 +112,7 @@ struct intList {
     }
 };
 
-bool contains(int num) {
+bool contains(int num, int contains1, int contains2) {
     bool containsTOrN = false;
     while (num > 0) {
         if ((num % 10 == 3) || (num % 10 == 9)) {

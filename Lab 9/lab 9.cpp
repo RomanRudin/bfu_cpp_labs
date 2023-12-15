@@ -8,13 +8,13 @@ struct Node {
 };
 
 struct intList {
-    Node* entrance;
+    Node* root;
 
 
     void print() { //Ready
         if (isEmpty()) return;
-        Node* current = entrance->next;
-        while (current != entrance) {
+        Node* current = root->next;
+        while (current != root) {
             std::cout << current->val << "\t";
             current = current->next;
         }
@@ -26,8 +26,8 @@ struct intList {
     int length() { //Ready
         if (isEmpty()) return 0;
         int counter = 0;
-        Node* current = entrance->next;
-        while (current != entrance) {
+        Node* current = root->next;
+        while (current != root) {
             counter++;
             current = current->next;
         }
@@ -36,7 +36,7 @@ struct intList {
 
 
     bool isEmpty() { //Ready
-        return entrance->next == nullptr;
+        return root->next == nullptr;
     }
 
 
@@ -44,16 +44,16 @@ struct intList {
         Node* elem = new Node();
         elem->val = value;
         if (isEmpty()) {
-            elem->next = entrance;
-            elem->previous = entrance;
-            entrance->next = elem;
-            entrance->previous = elem;
+            elem->next = root;
+            elem->previous = root;
+            root->next = elem;
+            root->previous = elem;
             return;
         }
-        elem->previous = entrance;
-        elem->next = entrance->next;
-        entrance->next->previous = elem;
-        entrance->next = elem;
+        elem->previous = root;
+        elem->next = root->next;
+        root->next->previous = elem;
+        root->next = elem;
         return;
     }
 
@@ -62,24 +62,24 @@ struct intList {
         Node* elem = new Node();
         elem->val = value;
         if (isEmpty()) {
-            elem->next = entrance;
-            elem->previous = entrance;
-            entrance->next = elem;
-            entrance->previous = elem;
+            elem->next = root;
+            elem->previous = root;
+            root->next = elem;
+            root->previous = elem;
             return;
         }
-        elem->previous = entrance->previous;
-        elem->next = entrance;
-        entrance->previous->next = elem;
-        entrance->previous = elem;
+        elem->previous = root->previous;
+        elem->next = root;
+        root->previous->next = elem;
+        root->previous = elem;
         return;
     }
 
 
     void pop(Node* elem) { //Ready
-        if ((elem->next == entrance) || (elem->previous == entrance)) {
-            elem->previous->next = entrance;
-            elem->next->previous = entrance;
+        if ((elem->next == root) || (elem->previous == root)) {
+            elem->previous->next = root;
+            elem->next->previous = root;
             return;
         }
         elem->previous->next = elem->next;
@@ -137,7 +137,7 @@ int main()
     root->next = nullptr;
     root->val = -1;
     root->previous = nullptr;
-    list->entrance = root;
+    list->root = root;
     for (int i = 0; i < length; i++) {
         int input;
         std::cin >> input;
