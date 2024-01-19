@@ -5,6 +5,7 @@ namespace fs
 	float Pythagoras(float a, float b);
 
 	class Square {
+	private:
 		float side;
 
 	public:
@@ -27,6 +28,7 @@ namespace fs
 
 
 	class Rectangle {
+	private:
 		float width;
 		float height;
 
@@ -54,6 +56,7 @@ namespace fs
 
 
 	class Cube {
+	private:
 		float side;
 
 	public:
@@ -76,6 +79,7 @@ namespace fs
 
 
 	class Prism {
+	private:
 		Rectangle* base;
 		float depth;
 
@@ -105,6 +109,7 @@ namespace fs
 
 
 	class Sphere {
+	private:
 		float radius;
 
 	public:
@@ -126,6 +131,7 @@ namespace fs
 
 
 	class Triangle {
+	private:
 		float sideA;
 		float sideB;
 		float angle;
@@ -157,6 +163,7 @@ namespace fs
 
 
 	class Parallelogram {
+	private:
 		float sideA;
 		float sideB;
 		float angle;
@@ -188,6 +195,7 @@ namespace fs
 
 
 	class Ellipse {
+	private:
 		float a;
 		float b;
 
@@ -214,6 +222,7 @@ namespace fs
 
 
 	class Tetrahedron {
+	private:
 		float side;
 
 	public:
@@ -235,6 +244,7 @@ namespace fs
 
 
 	class Cone {
+	private:
 		float radius;
 		float height;
 

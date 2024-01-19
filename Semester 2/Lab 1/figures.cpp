@@ -225,7 +225,7 @@ namespace fs {
 	}
 
 	float Triangle::Area() {
-		return this->sideA * this->sideB * sin(this->angle) / 2;
+		return this->sideA * this->sideB * sin(this->angle / (2 * Pi)) / 2;
 	}
 	float Triangle::Perimeter() {
 		return this->sideA + this->sideB + sqrt(pow(this->sideA, 2) + pow(this->sideB, 2) - 2 * this->sideA * this->sideB * cos(this->angle));
@@ -267,7 +267,7 @@ namespace fs {
 	}
 
 	float Parallelogram::Area() {
-		return this->sideA * this->sideB * sin(this->angle);
+		return this->sideA * this->sideB * sin(this->angle / (2 * PI));
 	}
 	float Parallelogram::Perimeter() {
 		return (this->sideA + this->sideB) * 2;
