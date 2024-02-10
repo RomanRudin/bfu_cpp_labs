@@ -3,19 +3,16 @@
 namespace str{
 	class String {
 	private:
-		char* data;
-
-	private:
-		void setup();
-		void swap(const String& other);
+		char* str;
+		size_t len;
 
 	public:
 		String() = default;
 		String(char* data);
 		~String();
 
-		String(String& other) : String(other.data) {};
-		String operator=(const String& other);
+		String(const String& other);
+		String& operator=(const String& other);
 
 		String operator+(const String& other);
 		String& operator+=(const String& other);

@@ -3,20 +3,23 @@
 #include "String.hpp"
 namespace str {
 	String::String() {
-
+		this->len = 1;
 	};
 	String::String(char* data) {
-
+		this->len = strlen(data) + 1;
+		this->str = new char[this->len];
+		std::copy(data, data + this->len, this->str);
 	};
 	String::~String() {
-
+		delete[] this->str;
 	};
 
-	String::String(String& other) : String(other.data) {
-
-	};
-	String String::operator=(const String& other) {
-
+	String::String(const String& other) : String(other.str) {} ;
+	String& String::operator=(const String& other) {
+		delete[] this->str;
+		this->str = new char[this->len];
+		std::copy(other.str, other.str + this->len, this->str);
+		return *this;
 	};
 
 	String String::operator+(const String& other) {

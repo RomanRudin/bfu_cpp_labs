@@ -9,11 +9,13 @@ namespace fs
 
 	public:
 		Matrix() = default;
-		Matrix(const float** data);
-		Matrix(const Matrix& other) : Matrix(other.data);
+		Matrix(float** &data, int n, int m);
+		Matrix(int n, int m);
+		Matrix(Matrix& other) : Matrix(other.data, other.n, other.m) {};
 
 		~Matrix();
 
 		Matrix& operator=(Matrix matrix);
+		void Print();
 	};
 }
