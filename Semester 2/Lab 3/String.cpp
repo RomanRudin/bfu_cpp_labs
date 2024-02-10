@@ -1,10 +1,10 @@
-#pragma once
 #include <iostream>
 #include "String.hpp"
+
 namespace str {
-	String::String() {
+	/*String::String() {
 		this->len = 1;
-	};
+	};*/
 	String::String(char* data) {
 		this->len = strlen(data) + 1;
 		this->str = new char[this->len];
@@ -23,7 +23,9 @@ namespace str {
 	};
 
 	String String::operator+(const String& other) {
-
+		String tmp(this->str);
+		tmp += other;
+		return tmp;
 	};
 	String& String::operator+=(const String& other) {
 		this->len += other.len;
@@ -73,14 +75,14 @@ namespace str {
 		return this->len == 1;
 	};
 	int String::find(char symbol) {
-		for (int i = 0; i < this->len; i++) 
+		for (size_t i = 0; i < this->len; i++)
 			if (this->str[i] == symbol) return i;
 	};
 	int String::find(String& str) {
 
 	};
 	int String::rfind(char symbol) {
-		for (int i = this->len; i > 0; i--)
+		for (size_t i = this->len; i > 0; i--)
 			if (this->str[i] == symbol) return i;
 	};
 	int String::rfind(String& str) {
@@ -88,7 +90,7 @@ namespace str {
 	};
 	int String::count(char symbol) {
 		int counter = 0;
-		for (int i = this->len; i > 0; i--)
+		for (size_t i = this->len; i > 0; i--)
 			if (this->str[i] == symbol) counter++;
 		return counter;
 	};
@@ -103,10 +105,16 @@ namespace str {
 	};
 
 	bool String::isUpper() {
-
+		for (size_t i = 0; i < this->len; i++)
+			if ((this->str[i] >= 141) && (this->str[i] <= 172))
+				return false;
+		return true;
 	};
 	bool String::isLower() {
-
+		for (size_t i = 0; i < this->len; i++)
+			if ((this->str[i] >= 101) && (this->str[i] <= 132))
+				return false;
+		return true;
 	};
 	void String::capitalise() {
 
@@ -114,14 +122,20 @@ namespace str {
 	void String::toUpper() {
 
 	};
-	bool String::isUpper() {
+	bool String::toLower() {
 
 	};
 	bool String::isDigit() {
-
+		for (size_t i = 0; i < this->len; i++)
+			if (!((this->str[i] >= 60) && (this->str[i] <= 71)))
+				return false;
+		return true;
 	};
-	bool String::isSymbol() {
-
+	bool String::isLetter() {
+		for (size_t i = 0; i < this->len; i++)
+			if (!((this->str[i] >= 141) && (this->str[i] <= 172) || (this->str[i] >= 101) && (this->str[i] <= 132)))
+				return false;
+		return true;
 	};
 
 	void String::replace(char from, char to) {
