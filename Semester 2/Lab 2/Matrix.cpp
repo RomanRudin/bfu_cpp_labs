@@ -1,7 +1,7 @@
 #include "Matrix.hpp"
 #include <iostream>
 
-namespace fs
+namespace mx
 {
 	//Matrix::Matrix() {
 	//	this->n = 1;
@@ -15,7 +15,7 @@ namespace fs
 		this->n = n;
 		this->m = m;
 		this->data = new float* [this->n];
-		
+
 		for (int i = 0; i < this->n; i++)
 			this->data[i] = new float[this->m];
 
@@ -25,7 +25,11 @@ namespace fs
 				std::cin >> this->data[i][j];
 	};
 
-	Matrix::Matrix(float** &data, int n, int m) {
+	Matrix::Matrix(Matrix& other) : Matrix(other.n, other.m, other.data) {
+
+	};
+
+	Matrix::Matrix(int n, int m, float**& data) {
 		this->n = n;
 		this->m = m;
 		this->data = new float* [this->n];
@@ -43,7 +47,7 @@ namespace fs
 		delete[] this->data;
 	};
 
-	Matrix& Matrix::operator=(Matrix other) {
+	Matrix& Matrix::operator=(Matrix other){
 
 		for (int i = 0; i < this->n; i++)
 			delete[] this->data[i];
@@ -64,8 +68,9 @@ namespace fs
 	};
 
 	void Matrix::Print() {
+		std::cout << "Matrix: " << std::endl;
 		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) 
+			for (int j = 0; j < m; j++)
 				std::cout << data[i][j] << "\t";
 			std::cout << std::endl;
 		}
