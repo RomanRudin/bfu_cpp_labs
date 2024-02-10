@@ -14,7 +14,7 @@ namespace str {
 		delete[] this->str;
 	};
 
-	String::String(const String& other) : String(other.str) {} ;
+	String::String(const String& other) : String(other.str) {};
 	String& String::operator=(const String& other) {
 		delete[] this->str;
 		this->str = new char[this->len];
@@ -26,55 +26,77 @@ namespace str {
 
 	};
 	String& String::operator+=(const String& other) {
-
+		this->len += other.len;
+		this->str = strcat(this->str, other.str);
+		return *this;
 	};
 	String String::operator*(int a) {
-
+		String tmp (this->str);
+		for (int i = 0; i < (a - 1); i++) {
+			tmp += tmp;
+		}
+		return tmp;
 	};
 	String& String::operator*=(int a) {
 
 	};
 
 	char String::operator[](int index) {
-
+		return this->str[index];
 	};
 
 	bool String::operator==(const String& other) {
-
+		return strcmp(this->str, other.str) == 0;
 	};
-	bool String::operator<(const String& str) {
-
+	bool String::operator!=(const String& other) {
+		return !(*this == other);
 	};
-	bool String::operator>(const String& str) {
-
+	bool String::operator<(const String& other) {
+		return strcmp(this->str, other.str) < 0;
+	};
+	bool String::operator>(const String& other) {
+		return strcmp(this->str, other.str) > 0;
+	};
+	bool String::operator<=(const String& other) {
+		return strcmp(this->str, other.str) <= 0;
+	};
+	bool String::operator>=(const String& other) {
+		return strcmp(this->str, other.str) >= 0;
 	};
 
 	char String::at(int index) {
-
+		if ((index >= 0) && (index < this->len)) {
+			return this->str[index];
+		}
 	};
 	bool String::isEmpty() {
-
+		return this->len == 1;
 	};
 	int String::find(char symbol) {
-
+		for (int i = 0; i < this->len; i++) 
+			if (this->str[i] == symbol) return i;
 	};
 	int String::find(String& str) {
 
 	};
 	int String::rfind(char symbol) {
-
+		for (int i = this->len; i > 0; i--)
+			if (this->str[i] == symbol) return i;
 	};
 	int String::rfind(String& str) {
 
 	};
 	int String::count(char symbol) {
-
+		int counter = 0;
+		for (int i = this->len; i > 0; i--)
+			if (this->str[i] == symbol) counter++;
+		return counter;
 	};
 	int String::count(String& str) {
 
 	};
-	int String::length() {
-
+	size_t String::length() {
+		return this->len;
 	};
 	char* String::c_str() {
 
