@@ -8,7 +8,7 @@ namespace mx
 		float** data;
 
 	public:
-		Matrix() = default;
+		Matrix();
 		Matrix(int n, int m, float**& data);
 		Matrix(int n, int m);
 		Matrix(Matrix& other);
