@@ -46,9 +46,9 @@ namespace str {
 		bool isLower();
 		void capitalise();
 		void toUpper();
-		bool isUpper();
+		bool toLower();
 		bool isDigit();
-		bool isSymbol();
+		bool isLetter();
 
 		void replace(char from, char to);
 		void replace(char from, char to, int repeat);
