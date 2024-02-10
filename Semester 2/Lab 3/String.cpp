@@ -77,16 +77,40 @@ namespace str {
 	int String::find(char symbol) {
 		for (size_t i = 0; i < this->len; i++)
 			if (this->str[i] == symbol) return i;
+		return -1;
 	};
 	int String::find(String& str) {
-
+		if (str.len > this->len)
+			return -1;
+		for (size_t i = 0; i < this->len - str.len; i++) {
+			bool flag = true;
+			for (rsize_t j = 0; j < str.len; j++)
+				if (this->str[i + j] != str.str[j]) {
+					flag = false;
+					break;
+				}
+			if (flag) return i;
+		}
+		return -1;
 	};
 	int String::rfind(char symbol) {
 		for (size_t i = this->len; i > 0; i--)
 			if (this->str[i] == symbol) return i;
+		return -1;
 	};
 	int String::rfind(String& str) {
-
+		if (str.len > this->len)
+			return -1;
+		for (size_t i = this->len; i > str.len; i--) {
+			bool flag = true;
+			for (rsize_t j = str.len; j > 0 ; j--)
+				if (this->str[i + j] != str.str[j]) {
+					flag = false;
+					break;
+				}
+			if (flag) return i;
+		}
+		return -1;
 	};
 	int String::count(char symbol) {
 		int counter = 0;
