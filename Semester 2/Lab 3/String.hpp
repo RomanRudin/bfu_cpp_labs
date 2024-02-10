@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-namespace str{
+namespace str {
 	class String {
 	private:
 		char* str;
@@ -21,13 +21,16 @@ namespace str{
 
 		char operator[](int index);
 
-		bool operator==(const String& other);
-		bool operator<(const String& str);
-		bool operator>(const String& str);
+		bool operator==(const String& other); 
+		bool operator!=(const String& other);
+		bool operator<(const String& other);
+		bool operator>(const String& other);
+		bool operator<=(const String& other);
+		bool operator>=(const String& other);
 
 		friend std::istream& operator>>(std::istream& in, String& other);
 		friend std::ostream& operator<<(std::ostream& out, String& other);
-	
+
 		char at(int index);
 		bool isEmpty();
 		int find(char symbol);
@@ -36,12 +39,12 @@ namespace str{
 		int rfind(String& str);
 		int count(char symbol);
 		int count(String& str);
-		int length();
+		size_t length();
 		char* c_str();
-		
+
 		bool isUpper();
 		bool isLower();
-		void capitalise(); 
+		void capitalise();
 		void toUpper();
 		bool isUpper();
 		bool isDigit();
