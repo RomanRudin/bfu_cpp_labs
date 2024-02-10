@@ -23,7 +23,7 @@ namespace str {
 	};
 
 	String String::operator+(const String& other) {
-		String tmp(this->str);
+		String tmp(*this);
 		tmp += other;
 		return tmp;
 	};
@@ -33,7 +33,7 @@ namespace str {
 		return *this;
 	};
 	String String::operator*(int a) {
-		String tmp (this->str);
+		String tmp (*this);
 		for (int i = 0; i < (a - 1); i++) {
 			tmp += tmp;
 		}
