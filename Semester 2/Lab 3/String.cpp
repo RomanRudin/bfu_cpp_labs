@@ -5,6 +5,10 @@ namespace str {
 	/*String::String() {
 		this->len = 1;
 	};*/
+	String::String(size_t length) {
+		this->len = length + 1;
+		this->str = new char[this->len];
+	};
 	String::String(char* data) {
 		this->len = strlen(data) + 1;
 		this->str = new char[this->len];
@@ -33,7 +37,7 @@ namespace str {
 		return *this;
 	};
 	String String::operator*(int a) {
-		String tmp (*this);
+		String tmp(*this);
 		for (int i = 0; i < (a - 1); i++) {
 			tmp += tmp;
 		}
@@ -103,7 +107,7 @@ namespace str {
 			return -1;
 		for (size_t i = this->len; i > str.len; i--) {
 			bool flag = true;
-			for (rsize_t j = str.len; j > 0 ; j--)
+			for (rsize_t j = str.len; j > 0; j--)
 				if (this->str[i + j] != str.str[j]) {
 					flag = false;
 					break;
@@ -119,7 +123,18 @@ namespace str {
 		return counter;
 	};
 	int String::count(String& str) {
-
+		if (str.len > this->len)
+			return 0;
+		int counter = 0;
+		for (size_t i = 0; i < this->len - str.len; i++) {
+			counter++;
+			for (rsize_t j = 0; j < str.len; j++)
+				if (this->str[i + j] != str.str[j]) {
+					counter--;
+					break;
+				}
+		}
+		return counter;
 	};
 	size_t String::length() {
 		return this->len;
@@ -130,51 +145,86 @@ namespace str {
 
 	bool String::isUpper() {
 		for (size_t i = 0; i < this->len; i++)
-			if ((this->str[i] >= 141) && (this->str[i] <= 172))
+			if ((this->str[i] >= 97) && (this->str[i] <= 122))
 				return false;
 		return true;
 	};
 	bool String::isLower() {
 		for (size_t i = 0; i < this->len; i++)
-			if ((this->str[i] >= 101) && (this->str[i] <= 132))
+			if ((this->str[i] >= 65) && (this->str[i] <= 90))
 				return false;
 		return true;
 	};
 	void String::capitalise() {
-
+		if ((this->str[0] >= 97) && (this->str[0] <= 122))
+			this->str[0] -= 32;
 	};
 	void String::toUpper() {
-
+		for (size_t i = 0; i < this->len; i++)
+			if ((this->str[0] >= 97) && (this->str[0] <= 122))
+				this->str[0] -= 32;
 	};
 	bool String::toLower() {
-
+		for (size_t i = 0; i < this->len; i++)
+			if ((this->str[0] >= 65) && (this->str[0] <= 90))
+				this->str[0] += 32;
 	};
 	bool String::isDigit() {
 		for (size_t i = 0; i < this->len; i++)
-			if (!((this->str[i] >= 60) && (this->str[i] <= 71)))
+			if (!((this->str[i] >= 48) && (this->str[i] <= 57)))
 				return false;
 		return true;
 	};
 	bool String::isLetter() {
 		for (size_t i = 0; i < this->len; i++)
-			if (!((this->str[i] >= 141) && (this->str[i] <= 172) || (this->str[i] >= 101) && (this->str[i] <= 132)))
+			if (!((this->str[i] >= 97) && (this->str[i] <= 122) || (this->str[i] >= 65) && (this->str[i] <= 90)))
 				return false;
 		return true;
 	};
 
 	void String::replace(char from, char to) {
-
+		for (size_t i = 0; i < this->len; i++)
+			if (this->str[i] == from)
+				this->str[i] = to;
 	};
 	void String::replace(char from, char to, int repeat) {
-
-	};
+		if (repeat <= 0)
+			return;
+		for (size_t i = 0; i < this->len; i++) {
+			if (this->str[i] == from) {
+				this->str[i] = to;
+				repeat--;
+			}
+			if (repeat <= 0)
+				return;
+		}	
+	}
 	void String::replace(String& from, String& to) {
+	/*	if (from.len > this->len)
+			return;
+		for (size_t i = 0; i < this->len - from.len; i++) {
 
+		}
+	*/
 	};
 	void String::replace(String& from, String& to, int repeat) {
+		/*	if (from.len > this->len)
+			return;
+		for (size_t i = 0; i < this->len - from.len; i++) {
 
+		}
+	*/
 	};
 
-	std::istream& operator>>(std::istream& in, String& other);
-	std::ostream& operator<<(std::ostream& out, String& other);
+	std::istream& operator>>(std::istream& in, String& string)
+	{
+		std::cin >> string.len >> string.str;
+		return in;
+	}
+
+	std::ostream& operator<<(std::ostream& out, String& string)
+	{
+		out << string.str;
+		return out;
+	}
 }
