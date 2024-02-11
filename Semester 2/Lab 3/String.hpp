@@ -7,7 +7,8 @@ namespace str {
 		size_t len;
 
 	public:
-		String() = default;
+		String();
+		String(size_t length);
 		String(char* data);
 		~String();
 
@@ -17,11 +18,11 @@ namespace str {
 		String operator+(const String& other);
 		String& operator+=(const String& other);
 		String operator*(int a);
-		String& operator*=(int a);
+		String& operator*=(int a); //TODO
 
 		char operator[](int index);
 
-		bool operator==(const String& other); 
+		bool operator==(const String& other);
 		bool operator!=(const String& other);
 		bool operator<(const String& other);
 		bool operator>(const String& other);
@@ -52,8 +53,8 @@ namespace str {
 
 		void replace(char from, char to);
 		void replace(char from, char to, int repeat);
-		void replace(String& from, String& to);
-		void replace(String& from, String& to, int repeat);
+		void replace(String& from, String& to); //TODO
+		void replace(String& from, String& to, int repeat);//TODO
 	};
 
 	std::istream& operator>>(std::istream& in, String& other);
