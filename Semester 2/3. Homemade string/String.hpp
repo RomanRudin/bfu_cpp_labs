@@ -19,7 +19,7 @@ namespace str {
 		String operator+(const String& other);
 		String& operator+=(const String& other);
 		String operator*(int a);
-		String& operator*=(int a); //TODO
+		String& operator*=(int a); 
 
 		char& operator[](int index);
 

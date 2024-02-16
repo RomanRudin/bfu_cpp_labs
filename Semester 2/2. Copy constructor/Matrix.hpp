@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fs
+namespace mx
 {
 	class Matrix {
 	private:
@@ -8,10 +8,10 @@ namespace fs
 		float** data;
 
 	public:
-		Matrix() = default;
-		Matrix(float** &data, int n, int m);
+		Matrix();
+		Matrix(int n, int m, float**& data);
 		Matrix(int n, int m);
-		Matrix(Matrix& other) : Matrix(other.data, other.n, other.m) {};
+		Matrix(Matrix& other);
 
 		~Matrix();
 
