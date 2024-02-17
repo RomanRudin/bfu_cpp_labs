@@ -13,11 +13,11 @@ int main()
 	if (c != s) {
 		std::cout << seeking << "\t" << c.length() << std::endl << c << std::endl;
 	}
-	if (a > s) {
+	if (a < s) {
 		std::cin >> a.at(0);
-		std::cout << a;
+		std::cout << a << std::endl;
 		std::cin >> a;
-		std::cout << a;
+		std::cout << a << std::endl;
 	}
 	std::cout << a.c_str();
 }

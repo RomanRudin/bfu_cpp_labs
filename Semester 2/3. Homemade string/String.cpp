@@ -38,19 +38,24 @@ namespace str {
 		return tmp;
 	};
 	String& String::operator+=(const String& other) {
+		String tmp(*this);
+		delete[] this->str;
 		this->len += other.len;
-		this->str = strcat(this->str, other.str);
+		this->str = new char[this->len];
+		std::copy(tmp.str, tmp.str + tmp.len, this->str);
+		strcat_s(this->str, this->len, other.str);
 		return *this;
 	};
-	String String::operator*(int a) {
+	String String::operator*(int a) { //TODO
 		String tmp(*this);
 		for (int i = 0; i < (a - 1); i++) {
 			tmp += tmp;
 		}
 		return tmp;
 	};
-	String& String::operator*=(int a) {
-
+	String& String::operator*=(int a) { //TODO
+		String tmp(*this);
+		return tmp;
 	};
 
 	char& String::operator[](int index) {
@@ -146,7 +151,7 @@ namespace str {
 		return this->len;
 	};
 	char* String::c_str() {
-
+		return str;
 	};
 
 	bool String::isUpper() {
@@ -170,7 +175,7 @@ namespace str {
 			if ((this->str[0] >= 97) && (this->str[0] <= 122))
 				this->str[0] -= 32;
 	};
-	bool String::toLower() {
+	void String::toLower() {
 		for (size_t i = 0; i < this->len; i++)
 			if ((this->str[0] >= 65) && (this->str[0] <= 90))
 				this->str[0] += 32;

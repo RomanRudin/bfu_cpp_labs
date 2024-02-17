@@ -19,7 +19,7 @@ namespace str {
 		String operator+(const String& other);
 		String& operator+=(const String& other);
 		String operator*(int a);
-		String& operator*=(int a); 
+		String& operator*=(int a); //TODO
 
 		char& operator[](int index);
 
@@ -48,7 +48,7 @@ namespace str {
 		bool isLower();
 		void capitalise();
 		void toUpper();
-		bool toLower();
+		void toLower();
 		bool isDigit();
 		bool isLetter();
 
