@@ -1,22 +1,27 @@
 #include <iostream>
-
 namespace mtx {
+	template<typename T, int N, int M>
+	std::ostream& operator<<(std::ostream& out, Matrix<T, N, M>& matrix)
+	{
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+				out << matrix.matrix[i][j] << '\t';
+			out << '\n';
+		}
+		return out;
+	}
+
 	template <typename T, int N, int M>
 	class Matrix {
 		T matrix[N][M];
 	public:
-		Matrix() {
-
-		};
+		Matrix() = default;
 		Matrix(const Matrix& other) = delete;
 		Matrix& operator=(const Matrix& other) = delete;
-		~Matrix() {
-
-		};
-
+		~Matrix() {};
 		friend std::istream& operator>>(std::istream& in, Matrix& other);
 		friend std::ostream& operator<<(std::ostream& out, Matrix& other);
-
 		Matrix<T, N, M> operator+(const Matrix<T, N, M>& other) {
 			*this += other;
 			return *this;
@@ -100,17 +105,4 @@ namespace mtx {
 		return in;
 	}
 
-	template<typename T, int N, int M>
-	std::ostream& operator<<(std::ostream& out, Matrix<T, N, M>& matrix)
-	{
-		for (int i = 0; i < N; i++)
-		{
-			for (int j = 0; j < M; j++)
-			{
-				out << matrix.matrix[i][j] << '\t';
-			}
-			out << '\n'
-		}
-		return out;
-	}
 }
