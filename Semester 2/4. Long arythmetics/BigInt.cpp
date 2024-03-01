@@ -5,104 +5,141 @@
 namespace bint {
 	BigInt::BigInt() {
 		this->str = str::String("");
-		this->isNegative = false;
-		this->length = 0;
 	};
 	BigInt::BigInt(int data) {
 		this->str = str::String("");
-		this->isNegative = data > 0;
-		data = std::abs(data);
-		unsigned int counter = 0;
 		while (data > 0) {
 			this->str = str::String((char)(data % 10 + 48) + this->str.c_str());
 			data /= 10;
-			counter++;
 		}
-		this->length = counter;
 	};
 	BigInt::BigInt(long long data) {
 		this->str = str::String("");
-		this->isNegative = data > 0;
-		data = std::abs(data);
-		unsigned int counter = 0;
 		while (data > 0) {
 			this->str = str::String((char)(data % 10 + 48) + this->str.c_str());
 			data /= 10;
-			counter++;
 		}
-		this->length = counter;
 	};
 	BigInt::BigInt(str::String data) {
 		if (!data.isDigit()) {
-			throw "";
+			std::cout << "The string contains characters other than digits!" << std::endl;
+			throw std::exception("The string contains characters other than digits!");
 		}
 		this->str = data;
-		this->isNegative = false;
-		this->length = data.length();
 	};
 	BigInt::~BigInt() {
 		this->str.~String();
 	};
 
-	BigInt BigInt::operator+(BigInt& other) {
+	BigInt BigInt::operator+(const BigInt& other) {
 		BigInt tmp(*this);
 		tmp += other;
 		return tmp;
 	};
-	BigInt& BigInt::operator+=(BigInt& other) {
-		if ((this->isNegative && !other.isNegative) || (!this->isNegative && other.isNegative)) {
-			BigInt tmp(*this);
-			tmp -= other;
-			return *this;
+	BigInt& BigInt::operator+=(const BigInt& other) {
+		if (this->negative != other.negative) {
+			if (this->negative) return *(other -= *this);
+			if (other.negative) return (*this -= other);
 		}
-		str::String tmp("");
-		if (this->length >= other.length) {
-			bool addDigit = false;
-			unsigned short currentDigit;
-			for (int i = this->length; i > 0; i--) {
-				currentDigit = (short)this->str.at(i) + (short)other.str.at(i) - 92;
-				if (addDigit) {
-					currentDigit++;
-					addDigit = false;
+		str::String tmpS = other.str;
+		tmpS = tmpS.reverse();
+		str::String tmpL = this->str.reverse();
+		if (tmpS.length() > tmpL.length()) {
+			str::String tmpL = tmpS;
+			tmpS = this->str.reverse();
+		}
+		bool extra_digit = false;
+		for (int i = 0; i < tmpS.length(); i++) {
+			tmpL[i] += tmpS[i] - 48;
+			if (extra_digit) {
+				tmpL[i]++;
+				extra_digit = false;
+			}
+			extra_digit = tmpL[i] > 57;
+			if (extra_digit) tmpL[i] -= 10;
+		}
+		if (extra_digit) {
+			if (tmpL.length() == tmpS.length()) {
+				tmpL += "1";
+			}
+			else {
+				for (int i = tmpS.length(); i < tmpL.length(); i++) {
+					if (extra_digit) {
+						tmpL[i]++;
+						extra_digit = false;
+					}
+					extra_digit = tmpL[i] > 57;
+					if (extra_digit) tmpL[i] -= 10;
 				}
-				if (currentDigit > 10) addDigit = true;
-				tmp = (char)((currentDigit % 10) + 48)
 			}
 		}
-		else {
-
-		}
-		this->str = tmp;
+		this->str = tmpL.reverse();
 		return *this;
 	};
-	BigInt BigInt::operator-(BigInt& other) {
+	BigInt BigInt::operator-(const BigInt& other) {
 		BigInt tmp(*this);
 		tmp += other;
 		return tmp;
 	};
-	BigInt& BigInt::operator-=(BigInt& other) {
+	BigInt& BigInt::operator-=(const BigInt& other) {
+		str::String tmpS = other.str;
+		tmpS = tmpS.reverse();
+		str::String tmpL = this->str.reverse();
+		if (tmpS > tmpL) {
+			this->negative = true;
+			str::String tmpL = tmpS;
+			tmpS = this->str.reverse();
+		}
+		bool extra_digit = false;
+		for (int i = 0; i < tmpS.length(); i++) {
+			tmpL[i] -= tmpS[i] + 48;
+			if (extra_digit) {
+				tmpL[i]--;
+				extra_digit = false;
+			}
+			extra_digit = tmpL[i] < 48;
+			if (extra_digit) tmpL[i] += 10;
+		}
+
+		//  TODO 
+		// In need of system od calculating edge variant of something like 10000 - 1
+		if (extra_digit) {
+			if (tmpL.length() == tmpS.length()) {
+				tmpL += "1";
+			}
+			else {
+				for (int i = tmpS.length(); i < tmpL.length(); i++) {
+					if (extra_digit) {
+						tmpL[i]++;
+						extra_digit = false;
+					}
+					extra_digit = tmpL[i] > 57;
+					if (extra_digit) tmpL[i] -= 10;
+				}
+			}
+		}
+		this->str = tmpL.reverse();
+		return *this;
+		//TODO
+
+	};
+	BigInt BigInt::operator*(const BigInt& other) {
+		BigInt tmp(*this);
+		tmp += other;
+		return tmp;
+	};
+	BigInt& BigInt::operator*=(const BigInt& other) {
 		str::String tmp("");
 
 		//TODO
 
 	};
-	BigInt BigInt::operator*(BigInt& other) {
+	BigInt BigInt::operator/(const BigInt& other) {
 		BigInt tmp(*this);
 		tmp += other;
 		return tmp;
 	};
-	BigInt& BigInt::operator*=(BigInt& other) {
-		str::String tmp("");
-
-		//TODO
-
-	};
-	BigInt BigInt::operator/(BigInt& other) {
-		BigInt tmp(*this);
-		tmp += other;
-		return tmp;
-	};
-	BigInt& BigInt::operator/=(BigInt& other) {
+	BigInt& BigInt::operator/=(const BigInt& other) {
 		str::String tmp("");
 
 		//TODO
@@ -147,7 +184,7 @@ namespace bint {
 		return in;
 	};
 	std::ostream& operator<<(std::ostream& out, BigInt& other) {
-		if (other.isNegative) out << "-";
+		if (other.negative) out << "-";
 		out << other.str;
 		return out;
 	};
