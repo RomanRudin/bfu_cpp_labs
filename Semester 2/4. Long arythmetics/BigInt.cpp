@@ -5,69 +5,104 @@
 namespace bint {
 	BigInt::BigInt() {
 		this->str = str::String("");
+		this->isNegative = false;
+		this->length = 0;
 	};
 	BigInt::BigInt(int data) {
 		this->str = str::String("");
+		this->isNegative = data > 0;
+		data = std::abs(data);
+		unsigned int counter = 0;
 		while (data > 0) {
 			this->str = str::String((char)(data % 10 + 48) + this->str.c_str());
 			data /= 10;
+			counter++;
 		}
+		this->length = counter;
 	};
 	BigInt::BigInt(long long data) {
 		this->str = str::String("");
+		this->isNegative = data > 0;
+		data = std::abs(data);
+		unsigned int counter = 0;
 		while (data > 0) {
 			this->str = str::String((char)(data % 10 + 48) + this->str.c_str());
 			data /= 10;
+			counter++;
 		}
+		this->length = counter;
 	};
 	BigInt::BigInt(str::String data) {
 		if (!data.isDigit()) {
 			throw "";
 		}
 		this->str = data;
+		this->isNegative = false;
+		this->length = data.length();
 	};
 	BigInt::~BigInt() {
 		this->str.~String();
 	};
 
-	BigInt BigInt::operator+(const BigInt& other) {
+	BigInt BigInt::operator+(BigInt& other) {
 		BigInt tmp(*this);
 		tmp += other;
 		return tmp;
 	};
 	BigInt& BigInt::operator+=(BigInt& other) {
+		if ((this->isNegative && !other.isNegative) || (!this->isNegative && other.isNegative)) {
+			BigInt tmp(*this);
+			tmp -= other;
+			return *this;
+		}
+		str::String tmp("");
+		if (this->length >= other.length) {
+			bool addDigit = false;
+			unsigned short currentDigit;
+			for (int i = this->length; i > 0; i--) {
+				currentDigit = (short)this->str.at(i) + (short)other.str.at(i) - 92;
+				if (addDigit) {
+					currentDigit++;
+					addDigit = false;
+				}
+				if (currentDigit > 10) addDigit = true;
+				tmp = (char)((currentDigit % 10) + 48)
+			}
+		}
+		else {
 
-		//TODO
-
+		}
+		this->str = tmp;
+		return *this;
 	};
-	BigInt BigInt::operator-(const BigInt& other) {
+	BigInt BigInt::operator-(BigInt& other) {
 		BigInt tmp(*this);
 		tmp += other;
 		return tmp;
 	};
-	BigInt& BigInt::operator-=(const BigInt& other) {
+	BigInt& BigInt::operator-=(BigInt& other) {
 		str::String tmp("");
 
 		//TODO
 
 	};
-	BigInt BigInt::operator*(const BigInt& other) {
+	BigInt BigInt::operator*(BigInt& other) {
 		BigInt tmp(*this);
 		tmp += other;
 		return tmp;
 	};
-	BigInt& BigInt::operator*=(const BigInt& other) {
+	BigInt& BigInt::operator*=(BigInt& other) {
 		str::String tmp("");
 
 		//TODO
 
 	};
-	BigInt BigInt::operator/(const BigInt& other) {
+	BigInt BigInt::operator/(BigInt& other) {
 		BigInt tmp(*this);
 		tmp += other;
 		return tmp;
 	};
-	BigInt& BigInt::operator/=(const BigInt& other) {
+	BigInt& BigInt::operator/=(BigInt& other) {
 		str::String tmp("");
 
 		//TODO
@@ -112,7 +147,7 @@ namespace bint {
 		return in;
 	};
 	std::ostream& operator<<(std::ostream& out, BigInt& other) {
-		if (other.negative) out << "-";
+		if (other.isNegative) out << "-";
 		out << other.str;
 		return out;
 	};
