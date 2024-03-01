@@ -21,6 +21,8 @@ namespace str {
 		String operator*(int a);
 		String& operator*=(int a); //TODO
 
+		String reverse();
+
 		char& operator[](int index);
 
 		bool operator==(const String& other);

@@ -58,6 +58,13 @@ namespace str {
 		return tmp;
 	};
 
+	String String::reverse() {
+		String tmp(this->length());
+		for (int i = 0; i < this->length(); i++)
+			tmp.str[i] = this->str[this->length() - i];
+		return tmp;
+	}
+
 	char& String::operator[](int index) {
 		return this->str[index];
 	};
