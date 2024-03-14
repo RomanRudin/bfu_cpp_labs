@@ -28,9 +28,5 @@ int main()
     std::cin >> d;
 
     c *= d;
-    std::cout << "Matrix c *= d: " << "\n"  << c << std::endl;
-
-    int arr[3][3]{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-    mtx::Matrix<int, 3, 3> f(arr);
-    std::cout << "Determinant of f matrix:" << f.det() << std::endl;;
+    std::cout << "Matrix c *= d: " << "\n" << c << std::endl;
 }

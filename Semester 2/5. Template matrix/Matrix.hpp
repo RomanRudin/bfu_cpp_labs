@@ -1,8 +1,37 @@
 #include <iostream>>
 
 namespace mtx {
-    
-    
+
+    auto recursiveDet(double** matrix, int K) {
+        if (K == 1) {
+            return matrix[0][0];
+        }
+        if (K == 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
+        }
+        else {
+            double sum = 0;
+            for (int i = 0; i < K; i++) {
+                double** tmp = new double* [K - 1];
+                for (int k = 0; k < K - 1; k++) {
+                    tmp[k] = new double[K - 1];
+                }
+                for (int k = 0; k < K - 1; k++)
+                    for (int l = 0; l < K; l++) {
+                        if (l == i) continue;
+                        else if (l > i)
+                            tmp[k][l] = matrix[k + 1][l + 1];
+                        else
+                            tmp[k][l] = matrix[k + 1][l];
+                    }
+                sum += matrix[0][i] * pow(-1, 2 + i) * recursiveDet(tmp, K - 1);
+            }
+            for (int i = 0; i < K; i++)
+                delete matrix[i];
+            return sum;
+        }
+    }
+
     template<typename T, int N, int M>
     class Matrix
     {
@@ -75,7 +104,6 @@ namespace mtx {
             return *this;
         }
 
-        template<typename T, int N, int M>
         T det()
         {
             if (N != M)
@@ -83,7 +111,13 @@ namespace mtx {
                 std::cout << "The matrix isn't square!" << std::endl;
                 throw std::exception("The matrix isn't square!");
             }
-            return recursiveDet(matrix, M);
+            double** tmp = new double* [M];
+            for (int i = 0; i < M; i++)
+                tmp[i] = new double[M];
+            for (int i = 0; i < M; i++)
+                for (int j = 0; j < M; j++)
+                    tmp[i][j] = this->matrix[i][j];
+            return (T)recursiveDet(tmp, M);
         }
 
         template <typename T, int N, int M>
@@ -91,11 +125,8 @@ namespace mtx {
 
         template<typename T, int N, int M>
         friend std::istream& operator>>(std::istream& in, Matrix<T, N, M>& object);
-
-        template<typename T, int N, int M>
-        friend auto recursiveDet(T** matrix, int K);
-
     };
+    
     template<typename T, int N, int M>
     std::ostream& operator<<(std::ostream& out, const Matrix<T, N, M>& object)
     {
@@ -115,34 +146,5 @@ namespace mtx {
             for (int j = 0; j < M; j++)
                 in >> object.matrix[i][j];
         return in;
-    }
-
-    template<typename T, int N, int M>
-    auto recursiveDet(T** matrix, int K) {
-        if (K == 1) {
-            return matrix[0][0];
-        }
-        if (K == 2) {
-            return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
-        }
-        else {
-            int sum = 0;
-            for (int i = 0; i < K; i++) {
-                int** tmp = new int* [K - 1];
-                for (int k = 0; k < K - 1; k++) {
-                    tmp[k] = new int[K - 1];
-                }
-                for (int k = 0; k < K - 1; k++)
-                    for (int l = 0; l < K; l++) {
-                        if (l == i) continue;
-                        else if (l > i)
-                            tmp[k][l] = matrix[k + 1][l + 1];
-                        else
-                            tmp[k][l] = matrix[k + 1][l];
-                    }
-                sum += matrix[0][i] * pow(-1, 2 + i) * recursiveDet(tmp, K - 1);
-            }
-            return sum;
-        }
     }
 }
