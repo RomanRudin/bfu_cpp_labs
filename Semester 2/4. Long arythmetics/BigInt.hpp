@@ -14,17 +14,28 @@ namespace bint {
 		BigInt(str::String data);
 		~BigInt();
 
-		BigInt operator+(const BigInt& other);
-		BigInt& operator+=(const BigInt& other);
-		BigInt operator-(const BigInt& other);
-		BigInt& operator-=(const BigInt& other);
-		BigInt operator*(const BigInt& other);
-		BigInt& operator*=(const BigInt& other);
-		BigInt operator/(const BigInt& other);
-		BigInt& operator/=(const BigInt& other);
+
+		BigInt operator+(int num);
+		BigInt operator+=(int num);
+		BigInt operator-(int num);
+		BigInt operator-=(int num);
+		BigInt operator*(int num);
+		BigInt operator*=(int num);
+		BigInt operator/(int num);
+		BigInt operator/=(int num);
+
+		BigInt operator+(BigInt& other);
+		BigInt& operator+=(BigInt& other);
+		BigInt operator-(BigInt& other);
+		BigInt& operator-=(BigInt& other);
+		BigInt operator*(BigInt& other);
+		BigInt& operator*=(BigInt& other);
+		BigInt operator/(BigInt& other);
+		BigInt& operator/=(BigInt& other);
 		BigInt pow(int num);
 		BigInt sqrt();
 		BigInt root(int num);
+
 
 		bool operator==(const BigInt& other);
 		bool operator!=(const BigInt& other);
@@ -32,11 +43,12 @@ namespace bint {
 		bool operator>(const BigInt& other);
 		bool operator<=(const BigInt& other);
 		bool operator>=(const BigInt& other);
-	
+
+		
 		friend std::istream& operator>>(std::istream& in, BigInt& other);
 		friend std::ostream& operator<<(std::ostream& out, BigInt& other);
 	};
-
+		
 	std::istream& operator>>(std::istream& in, BigInt& other);
 	std::ostream& operator<<(std::ostream& out, BigInt& other);
 }
