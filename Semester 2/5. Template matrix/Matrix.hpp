@@ -104,6 +104,12 @@ namespace mtx {
             return *this;
         }
 
+        Matrix<T, N, M>& operator++(int) {
+            Matrix<T, N, M>tmp = *this;
+            operator++();
+            return tmp;
+        }
+
         T det()
         {
             if (N != M)
@@ -126,7 +132,7 @@ namespace mtx {
         template<typename T, int N, int M>
         friend std::istream& operator>>(std::istream& in, Matrix<T, N, M>& object);
     };
-    
+
     template<typename T, int N, int M>
     std::ostream& operator<<(std::ostream& out, const Matrix<T, N, M>& object)
     {

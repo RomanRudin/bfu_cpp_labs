@@ -14,11 +14,11 @@ int main()
     mtx::Matrix <int, 2, 2> b = a;
     std::cout << "Matrix b:" << "\n" << b << std::endl;
 
-    a = ++a;
+    a++;
     std::cout << "Matrix a++:" << "\n" << a << std::endl;
 
     b *= 2;
-    std::cout << "Matrix b *= 2:" << "\n" << a << std::endl;
+    std::cout << "Matrix b *= 2:" << "\n" << b << std::endl;
 
     mtx::Matrix <int, 2, 2> c = a + b;
     std::cout << "Matrix c = a + b:" << "\n" << c << std::endl;
