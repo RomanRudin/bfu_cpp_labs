@@ -2,6 +2,9 @@
 #include <iostream>
 #include "String.hpp"
 namespace bint {
+	char toChar(int num);
+	int toInt(char sym);
+
 	class BigInt {
 	private:
 		str::String str;

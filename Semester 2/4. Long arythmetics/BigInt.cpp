@@ -1,55 +1,87 @@
 #pragma once
 #include <iostream>
 #include "BigInt.hpp"
-#include "String.hpp"
 namespace bint {
 	BigInt::BigInt() {
 		this->str = str::String("");
 		this->negative = false;
-	};
+	}
+	BigInt::BigInt(int data){
+		this->negative = data < 0;
+		str::String tmp("");
+		while (data != 0) {
+			int ndata = data;
+			data /= 10;
+			tmp += toChar(ndata - data * 10);
+		}
+		this->str = tmp;
+	}
+
+	BigInt::BigInt(long long data){
+		this->negative = data < 0;
+		str::String tmp("");
+		while (data != 0) {
+			long long ndata = data;
+			data /= 10;
+			tmp += toChar(ndata - data * 10);
+		}
+		this->str = tmp;
+	}
+	
 	BigInt::BigInt(str::String data) {
 		if (!data.isDigit()) {
 			std::cout << "The string contains characters other than digits!" << std::endl;
 			throw std::exception("The string contains characters other than digits!");
 		}
 		this->str = data;
+		std::cout << data << std::endl;
+		for (size_t i = 0; i < data.length(); i++) {
+			std::cout << this->str[i] << std::endl;
+			std::cout << this->str[i] << std::endl;
+		}
 		this->negative = false;
 	};
-	BigInt::~BigInt() {
-		this->str.~String();
-	};
+	BigInt::~BigInt() {};
 
 
 	BigInt BigInt::operator+(int num)
 	{
+		return *this;
 		//TODO
 	}
 	BigInt BigInt::operator+=(int num)
 	{
+		return *this;
 		//TODO
 	}
 	BigInt BigInt::operator-(int num)
 	{
+		return *this;
 		//TODO
 	}
 	BigInt BigInt::operator-=(int num)
 	{
+		return *this;
 		//TODO
 	}
 	BigInt BigInt::operator*(int num)
 	{
+		return *this;
 		//TODO
 	}
 	BigInt BigInt::operator*=(int num)
 	{
+		return *this;
 		//TODO
 	}
 	BigInt BigInt::operator/(int num)
 	{
+		return *this;
 		//TODO
 	}
 	BigInt BigInt::operator/=(int num)
 	{
+		return *this;
 		//TODO
 	}
 
@@ -158,6 +190,7 @@ namespace bint {
 		for (int i = 0; i < other.str.length(); i++) {
 			
 		}
+		return *this;
 	};
 	BigInt BigInt::operator/(BigInt& other) {
 		BigInt tmp(*this);
@@ -168,7 +201,7 @@ namespace bint {
 		str::String tmp("");
 
 		//TODO
-
+		return *this;
 	};
 	BigInt BigInt::pow(int num) {
 		BigInt tmp(*this);
@@ -178,9 +211,11 @@ namespace bint {
 		return tmp;
 	};
 	BigInt BigInt::sqrt() {
+		return *this;
 
 	};
 	BigInt BigInt::root(int num) {
+		return *this;
 
 	};
 
@@ -202,6 +237,17 @@ namespace bint {
 	bool BigInt::operator>=(const BigInt& other) {
 		return (this->str >= other.str);
 	};
+
+
+	char toChar(int num)
+	{
+		return int(num - 48);
+	}
+
+	int toInt(char sym)
+	{
+		return int(sym) - 48;
+	}
 
 
 	std::istream& operator>>(std::istream& in, BigInt& other) {

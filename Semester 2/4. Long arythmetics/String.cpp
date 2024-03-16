@@ -190,7 +190,7 @@ namespace str {
 				this->str[0] += 32;
 	};
 	bool String::isDigit() {
-		for (size_t i = 0; i < this->len; i++)
+		for (size_t i = 0; i < this->len - 1; i++)
 			if (!((this->str[i] >= 48) && (this->str[i] <= 57)))
 				return false;
 		return true;
