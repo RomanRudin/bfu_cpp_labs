@@ -6,7 +6,7 @@ namespace bint {
 		this->str = str::String("");
 		this->negative = false;
 	}
-	BigInt::BigInt(int data){
+	BigInt::BigInt(int data) {
 		this->negative = data < 0;
 		str::String tmp("");
 		while (data != 0) {
@@ -17,17 +17,18 @@ namespace bint {
 		this->str = tmp;
 	}
 
-	BigInt::BigInt(long long data){
+	BigInt::BigInt(long long data) {
 		this->negative = data < 0;
 		str::String tmp("");
-		while (data != 0) {
-			long long ndata = data;
+		while (data != 0){
+			str::String* tochar = new str::String(toChar(data % 10));
+			tmp += *tochar;
+			delete tochar;
 			data /= 10;
-			tmp += toChar(ndata - data * 10);
 		}
 		this->str = tmp;
 	}
-	
+
 	BigInt::BigInt(str::String data) {
 		if (!data.isDigit()) {
 			std::cout << "The string contains characters other than digits!" << std::endl;
@@ -36,7 +37,6 @@ namespace bint {
 		this->str = data;
 		std::cout << data << std::endl;
 		for (size_t i = 0; i < data.length(); i++) {
-			std::cout << this->str[i] << std::endl;
 			std::cout << this->str[i] << std::endl;
 		}
 		this->negative = false;
@@ -184,11 +184,11 @@ namespace bint {
 		BigInt tmp();
 		if (!(this->negative ^ other.negative))
 			this->negative = false;
-		else 
+		else
 			this->negative = true;
 		BigInt currentIter();
 		for (int i = 0; i < other.str.length(); i++) {
-			
+
 		}
 		return *this;
 	};
@@ -241,7 +241,7 @@ namespace bint {
 
 	char toChar(int num)
 	{
-		return int(num - 48);
+		return char(num + 48);
 	}
 
 	int toInt(char sym)

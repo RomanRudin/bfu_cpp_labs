@@ -43,7 +43,7 @@ namespace str {
 		this->len += other.len;
 		this->str = new char[this->len];
 		std::copy(tmp.str, tmp.str + tmp.len, this->str);
-		strcat_s(this->str, this->len, other.str);
+		strcat_s(this->str, this->len + other.len - 1, other.str);
 		return *this;
 	};
 	String String::operator*(int a) { //TODO
