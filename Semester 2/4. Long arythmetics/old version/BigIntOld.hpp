@@ -1,18 +1,18 @@
 #pragma once
 #include <iostream>
-#include <cstring>
-#include <string>
-
+#include "String.hpp"
 namespace bint {
+	char toChar(int num);
+	int toInt(char sym);
+
 	class BigInt {
-    private:
-        int* data;
-        int size;
-        bool is_negative;
+	private:
+		str::String str;
+		bool negative;
 
 	public:
 		BigInt();
-		BigInt(const std::string& number);
+		BigInt(int data);
 		BigInt(long long data);
 		BigInt(str::String data);
 		~BigInt();

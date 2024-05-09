@@ -1,18 +1,23 @@
 #include <iostream>>
-#include "BoolVector.hpp"
+#include "BoolVector.cpp"
 
 int main() {
-    bv::BoolVector boolv;
+    bv::vector<bool> boolv;
     boolv.push_back(true);
-    std::cout << boolv[0] << std::endl;
+    std::cout << boolv[0] << "\t boolv[0]" << std::endl;
     boolv.push_back(false);
-    std::cout << boolv[1] << std::endl;
+    std::cout << boolv[1] << "\t boolv[1]" << std::endl;
     boolv.insert(1, true);
     boolv.erase(2);
-    std::cout << boolv.length() << std::endl;
+    std::cout << boolv.size() << "\t boolv.size()" << std::endl;
 
-    for (size_t i = 0; i < boolv.length(); ++i) {
-        std::cout << boolv[i] << ' ';
+    for (int i = 0; i < 8; i++) {
+        boolv.push_back(true);
+    }
+    std::cout << std::endl;
+
+    for (size_t i = 0; i < boolv.size(); ++i) {
+        std::cout << boolv[i] << "\t boolv[" << i << "]" << std::endl;
     }
 
     return 0;

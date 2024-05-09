@@ -1,262 +1,242 @@
-#pragma once
 #include <iostream>
+#include <cstring>
+#include <string>
 #include "BigInt.hpp"
+
 namespace bint {
-	BigInt::BigInt() {
-		this->str = str::String("");
-		this->negative = false;
-	}
-	BigInt::BigInt(int data) {
-		this->negative = data < 0;
-		str::String tmp("");
-		while (data != 0) {
-			int ndata = data;
-			data /= 10;
-			tmp += toChar(ndata - data * 10);
-		}
-		this->str = tmp;
-	}
+    BigInt::BigInt(const std::string& number) {
+        this->is_negative = (number[0] == '-'); // Установка флага отрицательности
+        size = number.size() - this->is_negative;
+        this->data = new int[size];
+        for (int i = size - 1, j = (this->is_negative ? 1 : 0); i >= 0; --i, ++j) {
+            this->data[i] = number[j] - '0';
+        }
+    }
 
-	BigInt::BigInt(long long data) {
-		this->negative = data < 0;
-		str::String tmp("");
-		while (data != 0){
-			str::String* tochar = new str::String(toChar(data % 10));
-			tmp += *tochar;
-			delete tochar;
-			data /= 10;
-		}
-		this->str = tmp;
-	}
+    BigInt::BigInt(const BigInt& other) {
+        size = other.size;
+        this->data = new int[size];
+        memcpy(this->data, other.data, size * sizeof(int));
+        this->is_negative = other.is_negative;
+    }
 
-	BigInt::BigInt(str::String data) {
-		if (!data.isDigit()) {
-			std::cout << "The string contains characters other than digits!" << std::endl;
-			throw std::exception("The string contains characters other than digits!");
-		}
-		this->str = data;
-		std::cout << data << std::endl;
-		for (size_t i = 0; i < data.length(); i++) {
-			std::cout << this->str[i] << std::endl;
-		}
-		this->negative = false;
-	};
-	BigInt::~BigInt() {};
+    BigInt::~BigInt() {
+        delete[] this->data;
+    }
+
+    BigInt& BigInt::operator=(const BigInt& other) {
+        if (this != &other) {
+            delete[] this->data;
+            size = other.size;
+            this->data = new int[size];
+            memcpy(this->data, other.data, size * sizeof(int));
+            this->is_negative = other.is_negative;
+        }
+        return *this;
+    }
 
 
-	BigInt BigInt::operator+(int num)
-	{
-		return *this;
-		//TODO
-	}
-	BigInt BigInt::operator+=(int num)
-	{
-		return *this;
-		//TODO
-	}
-	BigInt BigInt::operator-(int num)
-	{
-		return *this;
-		//TODO
-	}
-	BigInt BigInt::operator-=(int num)
-	{
-		return *this;
-		//TODO
-	}
-	BigInt BigInt::operator*(int num)
-	{
-		return *this;
-		//TODO
-	}
-	BigInt BigInt::operator*=(int num)
-	{
-		return *this;
-		//TODO
-	}
-	BigInt BigInt::operator/(int num)
-	{
-		return *this;
-		//TODO
-	}
-	BigInt BigInt::operator/=(int num)
-	{
-		return *this;
-		//TODO
-	}
-
-	BigInt BigInt::operator+(BigInt& other) {
-		BigInt tmp(*this);
-		tmp += other;
-		return tmp;
-	};
-	BigInt& BigInt::operator+=(BigInt& other) {
-		if (this->negative != other.negative) {
-			if (this->negative) return (other -= *this);
-			if (other.negative) return (*this -= other);
-		}
-		str::String tmpS = other.str;
-		tmpS = tmpS.reverse();
-		str::String tmpL = this->str.reverse();
-		if (tmpS.length() > tmpL.length()) {
-			str::String tmpL = tmpS;
-			tmpS = this->str.reverse();
-		}
-		bool extra_digit = false;
-		for (int i = 0; i < tmpS.length(); i++) {
-			tmpL[i] += tmpS[i] - 48;
-			if (extra_digit) {
-				tmpL[i]++;
-				extra_digit = false;
-			}
-			extra_digit = tmpL[i] > 57;
-			if (extra_digit) tmpL[i] -= 10;
-		}
-		if (extra_digit) {
-			if (tmpL.length() == tmpS.length()) {
-				tmpL += "1";
-			}
-			else {
-				for (int i = tmpS.length(); i < tmpL.length(); i++) {
-					if (extra_digit) {
-						tmpL[i]++;
-						extra_digit = false;
-					}
-					extra_digit = tmpL[i] > 57;
-					if (extra_digit) tmpL[i] -= 10;
-				}
-			}
-		}
-		this->str = tmpL.reverse();
-		return *this;
-	};
-	BigInt BigInt::operator-(BigInt& other) {
-		BigInt tmp(*this);
-		tmp += other;
-		return tmp;
-	};
-	BigInt& BigInt::operator-=(BigInt& other) {
-		str::String tmpS = other.str;
-		tmpS = tmpS.reverse();
-		str::String tmpL = this->str.reverse();
-		if (tmpS > tmpL) {
-			this->negative = true;
-			str::String tmpL = tmpS;
-			tmpS = this->str.reverse();
-		}
-		bool extra_digit = false;
-		for (int i = 0; i < tmpS.length(); i++) {
-			tmpL[i] -= tmpS[i] + 48;
-			if (extra_digit) {
-				tmpL[i]--;
-				extra_digit = false;
-			}
-			extra_digit = tmpL[i] < 48;
-			if (extra_digit) tmpL[i] += 10;
-		}
-
-		//  TODO 
-		// In need of system od calculating edge variant of something like 10000 - 1
-		if (extra_digit) {
-			if (tmpL.length() == tmpS.length()) {
-				tmpL += "1";
-			}
-			else {
-				for (int i = tmpS.length(); i < tmpL.length(); i++) {
-					if (extra_digit) {
-						tmpL[i]++;
-						extra_digit = false;
-					}
-					extra_digit = tmpL[i] > 57;
-					if (extra_digit) tmpL[i] -= 10;
-				}
-			}
-		}
-		this->str = tmpL.reverse();
-		return *this;
-	};
-	BigInt BigInt::operator*(BigInt& other) {
-		BigInt tmp(*this);
-		tmp *= other;
-		return tmp;
-	};
-	BigInt& BigInt::operator*=(BigInt& other) {
-		BigInt tmp();
-		if (!(this->negative ^ other.negative))
-			this->negative = false;
-		else
-			this->negative = true;
-		BigInt currentIter();
-		for (int i = 0; i < other.str.length(); i++) {
-
-		}
-		return *this;
-	};
-	BigInt BigInt::operator/(BigInt& other) {
-		BigInt tmp(*this);
-		tmp += other;
-		return tmp;
-	};
-	BigInt& BigInt::operator/=(BigInt& other) {
-		str::String tmp("");
-
-		//TODO
-		return *this;
-	};
-	BigInt BigInt::pow(int num) {
-		BigInt tmp(*this);
-		for (int i = 1; i < num; i++) {
-			tmp *= tmp;
-		}
-		return tmp;
-	};
-	BigInt BigInt::sqrt() {
-		return *this;
-
-	};
-	BigInt BigInt::root(int num) {
-		return *this;
-
-	};
-
-	bool BigInt::operator==(const BigInt& other) {
-		return (this->str == other.str);
-	};
-	bool BigInt::operator!=(const BigInt& other) {
-		return (!(this->str == other.str));
-	};
-	bool BigInt::operator<(const BigInt& other) {
-		return (this->str < other.str);
-	};
-	bool BigInt::operator>(const BigInt& other) {
-		return (this->str > other.str);
-	};
-	bool BigInt::operator<=(const BigInt& other) {
-		return (this->str <= other.str);
-	};
-	bool BigInt::operator>=(const BigInt& other) {
-		return (this->str >= other.str);
-	};
+    bool BigInt::operator<(BigInt& other) {
+        if (this->is_negative != other.is_negative)
+            return this->is_negative;
+        if (size != other.size)
+            return (this->size < other.size) ^ this->is_negative;
+        for (int i = this->size - 1; i >= 0; --i) {
+            if (this->data[i] != other.data[i])
+                return (this->data[i] < other.data[i]) ^ this->is_negative;
+        }
+        return false;
+    }
+    bool BigInt::operator>(BigInt& other) {
+        return other < *this;
+    }
+    bool BigInt::operator==(BigInt& other) {
+        return !(*this < other) && !(other < *this);
+    }
+    bool BigInt::operator!=(BigInt& other) {
+        return !(*this == other);
+    }
+    bool BigInt::operator>=(BigInt& other) {
+        return (other < *this) || (other == *this);
+    }
+    bool BigInt::operator<=(BigInt& other) {
+        return (*this > other) || (other == *this);
+    }
 
 
-	char toChar(int num)
-	{
-		return char(num + 48);
-	}
+    BigInt BigInt::operator+(BigInt& other) {
+        BigInt result;
+        if (this->is_negative == other.is_negative) { // Если знаки чисел одинаковые
+            result.size = std::max(size, other.size) + 1; // Размер результата не превысит наибольший из размеров слагаемых + 1 (на случай переноса)
+            result.data = new int[result.size];
+            int carry = 0;
+            for (int i = 0; i < result.size; ++i) {
+                int sum = carry;
+                if (i < size)
+                    sum += this->data[i];
+                if (i < other.size)
+                    sum += other.data[i];
+                result.data[i] = sum % 10;
+                carry = sum / 10;
+            }
+            result.is_negative = this->is_negative;
+            if (result.data[result.size - 1] == 0) // Удаляем лишний нуль, если он есть
+                --result.size;
+        }
+        else {
+            BigInt copy = *this;
+            result.size = std::max(size, other.size);
+            result.data = new int[result.size];
+            bool flag = false;
+            if (copy.size == other.size) {
+                for (int i = 0; i < copy.size; i++) {
+                    if (copy.data[i] > other.data[i]) {
+                        flag = true;
+                    }
+                }
+            }
+            if (copy.size > other.size)
+                flag = true;
+            if (flag)
+            {
+                for (int i = 0; i < result.size; i++)
+                {
+                    if (copy.data[i] < 0)
+                    {
+                        copy.data[i] += 10;
+                        copy.data[i + 1] -= 1;
+                    }
+                    if (i >= other.size)
+                    {
+                        result.data[i] = copy.data[i];
+                        continue;
+                    }
+                    if (copy.data[i] - other.data[i] < 0)
+                    {
+                        copy.data[i] += 10;
+                        copy.data[i + 1] -= 1;
+                    }
+                    result.data[i] = copy.data[i] - other.data[i];
+                }
+                result.is_negative = (copy.is_negative > other.is_negative);
+            }
+            else {
+                for (int i = 0; i < result.size; i++)
+                {
+                    if (other.data[i] < 0)
+                    {
+                        other.data[i] += 10;
+                        other.data[i + 1] -= 1;
+                    }
+                    if (i >= copy.size)
+                    {
+                        result.data[i] = other.data[i];
+                        continue;
+                    }
+                    if (other.data[i] - copy.data[i] < 0)
+                    {
+                        other.data[i] += 10;
+                        other.data[i + 1] -= 1;
+                    }
+                    result.data[i] = other.data[i] - copy.data[i];
+                }
+                result.is_negative = (other.is_negative > copy.is_negative);
+                if (result.data[result.size - 1] == 0) // Удаляем лишний нуль, если он есть
+                    --result.size;
+            }
+        }
+        return result;
+    }
 
-	int toInt(char sym)
-	{
-		return int(sym) - 48;
-	}
+    BigInt& BigInt::operator+=(BigInt& other) {
+        *this = *this + other;
+        return *this;
+    }
+
+    BigInt BigInt::operator-(BigInt& other) {
+        BigInt temp = other;
+        temp.is_negative = !other.is_negative;
+        return (*this) + temp;
+    }
+
+    BigInt& BigInt::operator-=(BigInt& other) {
+        BigInt temp = other;
+        temp.is_negative = !other.is_negative;
+        return (*this) += temp;
+    }
+
+    BigInt BigInt::operator*(BigInt& other) {
+        BigInt result;
+        result.size = size + other.size;
+        result.data = new int[result.size];
+        memset(result.data, 0, result.size * sizeof(int));
+
+        for (int i = 0; i < size; ++i) {
+            int carry = 0;
+            for (int j = 0; j < other.size || carry; ++j) {
+                long long current = result.data[i + j] + this->data[i] * 1ll * (j < other.size ? other.data[j] : 0) + carry;
+                result.data[i + j] = current % 10;
+                carry = current / 10;
+            }
+        }
+
+        // Убираем лишние нули в начале числа
+        while (result.size > 1 && result.data[result.size - 1] == 0)
+            --result.size;
+
+        // Определение знака результата
+        result.is_negative = (this->is_negative != other.is_negative);
+        return result;
+    }
+
+    BigInt& BigInt::operator*=(BigInt& other) {
+        *this = *this * other;
+        return *this;
+    }
+
+    BigInt BigInt::operator/(BigInt& other) {
+        //todo        
+        return (*this);
+    };
+    BigInt& BigInt::operator/=(BigInt& other) {
+        //todo        
+        return (*this);
+    };
+    BigInt BigInt::pow(int num) {
+        //todo        
+        return (*this);
+    };
+    BigInt BigInt::sqrt() {
+        //todo        
+        return (*this);
+    };
+    BigInt BigInt::root(int num) {
+        //todo        
+        return (*this);
+    };
 
 
-	std::istream& operator>>(std::istream& in, BigInt& other) {
-		std::cin >> other.str;
-		return in;
-	};
-	std::ostream& operator<<(std::ostream& out, BigInt& other) {
-		if (other.negative) out << "-";
-		out << other.str;
-		return out;
-	};
-}
+    std::ostream& operator<<(std::ostream& out, BigInt& bigint) {
+        if (bigint.is_negative)
+            out << '-';
+        bool flag = false;
+        for (int i = bigint.size - 1; i >= 0; --i) {
+            if (bigint.data[i] != 0)
+            {
+                flag = true;
+            }
+            if (flag) {
+                out << bigint.data[i];
+            }
+        }
+
+        return out;
+    }
+
+    std::istream& operator>>(std::istream& in, BigInt& bigint) {
+        std::string number;
+        in >> number;
+        bigint = BigInt(number);
+        return in;
+    }
+};

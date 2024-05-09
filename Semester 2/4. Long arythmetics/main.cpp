@@ -1,8 +1,8 @@
-#include "BigInt2.hpp"
+#include "BigInt.hpp"
 
 int main() {
-    bint::BigInt a("-10");
-    bint::BigInt b("1");
+    bint::BigInt a("-105890765789000065789");
+    bint::BigInt b("1234564356743");
     bint::BigInt c = a + b;
     bint::BigInt d = a * b;
 
