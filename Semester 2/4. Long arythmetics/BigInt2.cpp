@@ -215,17 +215,3 @@ public:
         return is;
     }
 };
-
-int main() {
-    BigInt a("-10");
-    BigInt b("1");
-    BigInt c = a + b;
-    BigInt d = a * b;
-
-
-    std::cout << "a: " << a << std::endl;
-    std::cout << "b: " << b << std::endl;
-    std::cout << "a + b: " << c << std::endl;
-    std::cout << "a * b: " << d << std::endl;
-    return 0;
-}
