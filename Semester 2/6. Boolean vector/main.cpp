@@ -29,17 +29,14 @@ public:
     void at(bool val, size_t index)
     {
         if ((index > this->size) || (index < 0))
-        {
-            throw std::out_of_range("Error: Index OOR");
-        }
-        if (val == true) this->data[index / 8] |= (1 << (index % 8)); // записать 1 в указанный бит
-        else this->data[index / 8] &= ~(1 << (index % 8)); // записать 0 в указанный бит
+            throw std::out_of_range("Index out of range");
+        if (val) this->data[index / 8] |= (1 << (index % 8));
+        else this->data[index / 8] &= ~(1 << (index % 8)); 
     }
 
     bool& operator[](size_t index)
     {
-        bool curr_val = ((1 << (index % 8)) & (this->data[index / 8])) != 0; // значение бита на позиции index
-
+        bool curr_val = ((1 << (index % 8)) & (this->data[index / 8])) != 0; 
         return curr_val;
     }
 
@@ -47,7 +44,7 @@ public:
         if (index > this->size) {
             throw std::out_of_range("Index out of range");
         }
-        push_back(false); // Добавляем место для нового значения
+        push_back(false);
         for (size_t i = this->size - 1; i > index; --i) {
             this->at((*this)[i - 1], i);
         }
