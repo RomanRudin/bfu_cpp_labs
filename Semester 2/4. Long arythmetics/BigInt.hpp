@@ -32,11 +32,11 @@ namespace bint {
 		BigInt& operator-=(BigInt& other);
 		BigInt operator*(BigInt& other);
 		BigInt& operator*=(BigInt& other);
-		BigInt operator/(BigInt& other);
-		BigInt& operator/=(BigInt& other);
-		BigInt pow(int num);
-		BigInt sqrt();
-		BigInt root(int num);
+		BigInt operator/(BigInt& other);//TODO
+		BigInt& operator/=(BigInt& other);//TODO
+		BigInt pow(int num);//TODO
+		BigInt sqrt(); //TODO
+		BigInt root(int num);//TODO
 
 
 		friend std::istream& operator>>(std::istream& in, BigInt& other);

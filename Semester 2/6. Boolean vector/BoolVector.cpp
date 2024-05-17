@@ -14,8 +14,25 @@ namespace bv {
     class vector<bool>
     {
     private:
-        std::vector<unsigned char> data;
+        unsigned char* data = new unsigned char[1];
         size_t length;
+
+        void pop_back()
+        {
+            unsigned char* p = new unsigned char[(this->length / 8) - 1];
+            std::copy(*&this->data, (*&this->data) + (this->length / 8) - 1, p);
+            std::swap(this->data, p);
+            delete[]p;
+        }
+
+        void push_last(bool val) 
+        {
+            unsigned char* p = new unsigned char[(this->length / 8) + 1];
+            std::copy(*&this->data, *&(this->data) + (this->length / 8), p);
+            p[this->length] = (char)val;
+            std::swap(this->data, p);
+            delete[]p;
+        }
     public:
         vector<bool>() {
             this->length = 0;
@@ -27,10 +44,10 @@ namespace bv {
 
         void push_back(bool value) {
             if (this->length % 8 == 0) {
-                this->data.push_back(0);
+                this->push_last(false);
             }
             if (value) {
-                this->data.back() |= (1 << (this->length % 8));
+                this->data[this->length / 8] |= (1 << (this->length % 8));
             }
             this->length++;
         }
@@ -68,10 +85,10 @@ namespace bv {
                 (*this)[i] = (*this)[i + 1];
             }
             if ((this->length - 1) % 8 == 0) {
-                this->data.pop_back();
+                this->pop_back();
             }
             else {
-                this->data.back() &= ~(1 << ((this->length - 1) % 8));
+                this->data[this->length / 8] &= ~(1 << ((this->length - 1) % 8));
             }
             this->length--;
         }

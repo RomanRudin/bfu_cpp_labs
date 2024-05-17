@@ -5,7 +5,7 @@
 
 namespace bint {
     BigInt::BigInt(const std::string& number) {
-        this->is_negative = (number[0] == '-'); // Установка флага отрицательности
+        this->is_negative = (number[0] == '-'); 
         size = number.size() - this->is_negative;
         this->data = new int[size];
         for (int i = size - 1, j = (this->is_negative ? 1 : 0); i >= 0; --i, ++j) {
@@ -66,8 +66,8 @@ namespace bint {
 
     BigInt BigInt::operator+(BigInt& other) {
         BigInt result;
-        if (this->is_negative == other.is_negative) { // Если знаки чисел одинаковые
-            result.size = std::max(size, other.size) + 1; // Размер результата не превысит наибольший из размеров слагаемых + 1 (на случай переноса)
+        if (this->is_negative == other.is_negative) { 
+            result.size = std::max(size, other.size) + 1; 
             result.data = new int[result.size];
             int carry = 0;
             for (int i = 0; i < result.size; ++i) {
@@ -80,7 +80,7 @@ namespace bint {
                 carry = sum / 10;
             }
             result.is_negative = this->is_negative;
-            if (result.data[result.size - 1] == 0) // Удаляем лишний нуль, если он есть
+            if (result.data[result.size - 1] == 0) 
                 --result.size;
         }
         else {
@@ -141,7 +141,7 @@ namespace bint {
                     result.data[i] = other.data[i] - copy.data[i];
                 }
                 result.is_negative = (other.is_negative > copy.is_negative);
-                if (result.data[result.size - 1] == 0) // Удаляем лишний нуль, если он есть
+                if (result.data[result.size - 1] == 0) 
                     --result.size;
             }
         }
@@ -170,7 +170,6 @@ namespace bint {
         result.size = size + other.size;
         result.data = new int[result.size];
         memset(result.data, 0, result.size * sizeof(int));
-
         for (int i = 0; i < size; ++i) {
             int carry = 0;
             for (int j = 0; j < other.size || carry; ++j) {
@@ -179,12 +178,8 @@ namespace bint {
                 carry = current / 10;
             }
         }
-
-        // Убираем лишние нули в начале числа
         while (result.size > 1 && result.data[result.size - 1] == 0)
             --result.size;
-
-        // Определение знака результата
         result.is_negative = (this->is_negative != other.is_negative);
         return result;
     }
@@ -203,7 +198,9 @@ namespace bint {
         return (*this);
     };
     BigInt BigInt::pow(int num) {
-        //todo        
+        if (num >= 2)
+            for (int i = 1; i < num; i++)
+                (*this) *= (*this);
         return (*this);
     };
     BigInt BigInt::sqrt() {
