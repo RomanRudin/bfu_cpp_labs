@@ -1,11 +1,28 @@
-cmake_minimum_required(VERSION 3.10)
-project(SFML_Example)
+cmake_minimum_required(VERSION 3.15)
+project(8lab)
+enable_language(CXX)
 
-set(SFML_ROOT_DIR "/path/to/SFML")  # Укажите здесь путь к установленной библиотеке SFML
 
-find_package(SFML 2.6.1 REQUIRED)
-
-add_executable(SFML_Example main.cpp)
-
-target_include_directories(SFML_Example PUBLIC ${SFML_INCLUDE_DIR})
-target_link_libraries(SFML_Example ${SFML_LIBRARIES})
+add_executable(main main.cpp)
+target_link_options(main PUBLIC -Llib)
+include_directories("include/")
+link_directories("lib/")
+target_link_libraries(main
+sfml-audio
+sfml-graphics
+sfml-window
+sfml-system
+sfml-network
+freetype
+ogg
+openal
+vorbis
+vorbisenc
+vorbisfile
+udev
+X11
+Xrandr
+OpenGL
+pthread
+Xcursor
+)

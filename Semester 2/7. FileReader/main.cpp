@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
 // N < 256 и a_i < 256, для всех i=1..N
 // .txt - массив данных в формате N и a_i, где i=1..N (ASCII)
@@ -108,35 +109,30 @@ public:
 	}
 };
 
-class BinfReader : public DataReader
-{
+class BinfReader : public DataReader {
 public:
-	BinfReader(const std::string& filename) : DataReader(filename) {}
+    BinfReader(const std::string& filename) : DataReader(filename) {}
 	virtual ~BinfReader()
 	{
 		if (m_data != nullptr)
 			delete[] m_data;
 	}
 
-	bool Open() override
-	{
-		m_in.open(m_filename, std::ios::binary);
-		if (!m_in.is_open())
+    bool Open() override {
+        m_in.open(m_filename, std::ios::binary);
+		if (!m_in.is_open()) 
 			return false;
-		return true;
-	}
+        return true;
+    }
 
-	void Read() override
-	{
+    void Read() override {
 		m_in.read((char*)&m_n, 1);
-		m_data = new uint8_t[m_n];
-		m_in.read((char*)m_data, m_n);
-	}
+		float* m_data = new float[m_n];
+		for (int i = 0; i < m_n; i++)
+			m_in.read(reinterpret_cast<char*>(&m_data[i]), sizeof(float));
+    }
 
-	void Write() override
-	{
-
-	}
+    void Write() override {}
 };
 
 DataReader* Factory(const std::string& filename)
@@ -152,48 +148,20 @@ DataReader* Factory(const std::string& filename)
 	return nullptr;
 }
 
-int main()
-{
-	uint8_t n;
-	uint8_t buf[100];
+int main() {
+    uint8_t n;
+    uint8_t buf[100];
 
-	DataReader* Reader = Factory("input2.bin");
-	if (Reader == nullptr)
-		return -1;
-	Reader->Open();
-	Reader->Read();
-	Reader->GetData(buf, n);
+    DataReader* Reader = Factory("input3.binf");
+    if (Reader == nullptr)
+        return -1;
+    Reader->Open();
+    Reader->Read();
+    Reader->GetData(buf, n);
 
-	std::cout << (int)n << std::endl;
-	for (int i = 0; i < n; i++)
-		std::cout << (int)buf[i] << std::endl;
+    std::cout << (int)n << std::endl;
+    for (int i = 0; i < n; i++)
+        std::cout << (int)buf[i] << std::endl;
 
-	delete Reader;
-
-
-
-	/*std::ifstream in("input2.bin", std::ios::binary);
-	uint8_t n;
-	in.read((char*)&n, 1);
-
-	uint8_t* buf = new uint8_t[n];
-	in.read((char*)buf, n);
-
-	std::cout << (int)n << std::endl;
-
-	for (int i = 0; i < n; i++)
-		std::cout << (int)buf[i] << std::endl;
-
-	delete[] buf;*/
-
-	/*//Создание бинарного файла
-	std::ofstream out("input2.bin", std::ios::binary);
-	uint8_t buf[6];
-	buf[0] = 5;
-	for (int i = 0; i < 5; i++)
-	{
-		buf[i+1] = i+127;
-	}
-
-	out.write((char*)buf, 6);*/
+    delete Reader;
 }
