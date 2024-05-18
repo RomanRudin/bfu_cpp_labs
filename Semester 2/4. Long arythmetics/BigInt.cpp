@@ -5,7 +5,7 @@
 
 namespace bint {
     BigInt::BigInt(const std::string& number) {
-        this->is_negative = (number[0] == '-'); 
+        this->is_negative = (number[0] == '-');
         size = number.size() - this->is_negative;
         this->data = new int[size];
         for (int i = size - 1, j = (this->is_negative ? 1 : 0); i >= 0; --i, ++j) {
@@ -66,8 +66,8 @@ namespace bint {
 
     BigInt BigInt::operator+(BigInt& other) {
         BigInt result;
-        if (this->is_negative == other.is_negative) { 
-            result.size = std::max(size, other.size) + 1; 
+        if (this->is_negative == other.is_negative) {
+            result.size = std::max(size, other.size) + 1;
             result.data = new int[result.size];
             int carry = 0;
             for (int i = 0; i < result.size; ++i) {
@@ -80,71 +80,77 @@ namespace bint {
                 carry = sum / 10;
             }
             result.is_negative = this->is_negative;
-            if (result.data[result.size - 1] == 0) 
+            if (result.data[result.size - 1] == 0)
                 --result.size;
         }
         else {
-            BigInt copy = *this;
-            result.size = std::max(size, other.size);
-            result.data = new int[result.size];
-            bool flag = false;
-            if (copy.size == other.size) {
-                for (int i = 0; i < copy.size; i++) {
-                    if (copy.data[i] > other.data[i]) {
-                        flag = true;
-                    }
-                }
-            }
-            if (copy.size > other.size)
-                flag = true;
-            if (flag)
-            {
-                for (int i = 0; i < result.size; i++)
-                {
-                    if (copy.data[i] < 0)
-                    {
-                        copy.data[i] += 10;
-                        copy.data[i + 1] -= 1;
-                    }
-                    if (i >= other.size)
-                    {
-                        result.data[i] = copy.data[i];
-                        continue;
-                    }
-                    if (copy.data[i] - other.data[i] < 0)
-                    {
-                        copy.data[i] += 10;
-                        copy.data[i + 1] -= 1;
-                    }
-                    result.data[i] = copy.data[i] - other.data[i];
-                }
-                result.is_negative = (copy.is_negative > other.is_negative);
-            }
-            else {
-                for (int i = 0; i < result.size; i++)
-                {
-                    if (other.data[i] < 0)
-                    {
-                        other.data[i] += 10;
-                        other.data[i + 1] -= 1;
-                    }
-                    if (i >= copy.size)
-                    {
-                        result.data[i] = other.data[i];
-                        continue;
-                    }
-                    if (other.data[i] - copy.data[i] < 0)
-                    {
-                        other.data[i] += 10;
-                        other.data[i + 1] -= 1;
-                    }
-                    result.data[i] = other.data[i] - copy.data[i];
-                }
-                result.is_negative = (other.is_negative > copy.is_negative);
-                if (result.data[result.size - 1] == 0) 
-                    --result.size;
-            }
+            if (this->is_negative) 
+                other -= *this;
+            else
+                *this -= other;
         }
+        // else {
+        //     BigInt copy = *this;
+        //     result.size = std::max(size, other.size);
+        //     result.data = new int[result.size];
+        //     bool flag = false;
+        //     if (copy.size == other.size) {
+        //         for (int i = copy.size - 1; i > 0; i--) {
+        //             if (copy.data[i] > other.data[i]) {
+        //                 flag = true;
+        //             }
+        //         }
+        //     }
+        //     if (copy.size > other.size)
+        //         flag = true;
+        //     if (flag)
+        //     {
+        //         for (int i = 0; i < result.size; i++)
+        //         {
+        //             if (copy.data[i] < 0)
+        //             {
+        //                 copy.data[i] += 10;
+        //                 copy.data[i + 1] -= 1;
+        //             }
+        //             if (i >= other.size)
+        //             {
+        //                 result.data[i] = copy.data[i];
+        //                 continue;
+        //             }
+        //             if (copy.data[i] - other.data[i] < 0)
+        //             {
+        //                 copy.data[i] += 10;
+        //                 copy.data[i + 1] -= 1;
+        //             }
+        //             result.data[i] = copy.data[i] - other.data[i];
+        //         }
+        //         result.is_negative = (copy.is_negative > other.is_negative);
+        //     }
+        //     else {
+        //         for (int i = 0; i < result.size; i++)
+        //         {
+        //             if (other.data[i] < 0)
+        //             {
+        //                 other.data[i] += 10;
+        //                 other.data[i + 1] -= 1;
+        //             }
+        //             if (i >= copy.size)
+        //             {
+        //                 result.data[i] = other.data[i];
+        //                 continue;
+        //             }
+        //             if (other.data[i] - copy.data[i] < 0)
+        //             {
+        //                 other.data[i] += 10;
+        //                 other.data[i + 1] -= 1;
+        //             }
+        //             result.data[i] = other.data[i] - copy.data[i];
+        //         }
+        //         result.is_negative = (other.is_negative > copy.is_negative);
+        //         if (result.data[result.size - 1] == 0)
+        //             --result.size;
+        //     }
+        // }
         return result;
     }
 
@@ -154,9 +160,71 @@ namespace bint {
     }
 
     BigInt BigInt::operator-(BigInt& other) {
-        BigInt temp = other;
-        temp.is_negative = !other.is_negative;
-        return (*this) + temp;
+        BigInt result;
+        if (other.is_negative != this->is_negative)
+            (*this) += other;
+        BigInt copy = *this;
+        result.size = std::max(size, other.size);
+        result.data = new int[result.size];
+        bool flag = false;
+        if (copy.size == other.size) {
+            for (int i = copy.size - 1; i > 0; i--) {
+                if (copy.data[i] > other.data[i]) {
+                    flag = true;
+                }
+            }
+        }
+        if (copy.size > other.size)
+            flag = true;
+        if (flag)
+        {
+            for (int i = 0; i < result.size; i++)
+            {
+                if (copy.data[i] < 0)
+                {
+                    copy.data[i] += 10;
+                    copy.data[i + 1] -= 1;
+                }
+                if (i >= other.size)
+                {
+                    result.data[i] = copy.data[i];
+                    continue;
+                }
+                if (copy.data[i] - other.data[i] < 0)
+                {
+                    copy.data[i] += 10;
+                    copy.data[i + 1] -= 1;
+                }
+                result.data[i] = copy.data[i] - other.data[i];
+            }
+            result.is_negative = (copy.is_negative > other.is_negative);
+        }
+        else {
+            for (int i = 0; i < result.size; i++)
+            {
+                if (other.data[i] < 0)
+                {
+                    other.data[i] += 10;
+                    other.data[i + 1] -= 1;
+                }
+                if (i >= copy.size)
+                {
+                    result.data[i] = other.data[i];
+                    continue;
+                }
+                if (other.data[i] - copy.data[i] < 0)
+                {
+                    other.data[i] += 10;
+                    other.data[i + 1] -= 1;
+                }
+                result.data[i] = other.data[i] - copy.data[i];
+            }
+            result.is_negative = (other.is_negative > copy.is_negative);
+            if (result.data[result.size - 1] == 0)
+                --result.size;
+        }
+    return result;
+
     }
 
     BigInt& BigInt::operator-=(BigInt& other) {

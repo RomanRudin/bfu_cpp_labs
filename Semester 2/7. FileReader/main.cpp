@@ -126,7 +126,7 @@ public:
     }
 
     void Read() override {
-		m_in.read((char*)&m_n, 1);
+		m_in.read((char*)&m_n, sizeof(int));
 		float* m_data = new float[m_n];
 		for (int i = 0; i < m_n; i++)
 			m_in.read(reinterpret_cast<char*>(&m_data[i]), sizeof(float));
