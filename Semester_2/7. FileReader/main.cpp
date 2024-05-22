@@ -12,11 +12,13 @@ protected:
 	std::ofstream m_out;
 	std::string m_filename;
 	uint8_t* m_data;
+	float* m_dataf;
 	uint8_t m_n;
+	uint32_t m_nf;
 
 public:
 	DataReader(const std::string& filename) :
-		m_filename(filename), m_n(0), m_data(nullptr) {}
+		m_filename(filename), m_n(0), m_data(nullptr), m_nf(0), m_dataf(nullptr) {}
 
 	virtual ~DataReader() {}
 
@@ -36,15 +38,11 @@ public:
 			buf[i] = m_data[i];
 	}
 
-	void GetData(float* buf, unsigned int& n)
+	void GetData(float* buf, uint32_t& n)
 	{
-		std::cout << "Getting data" << std::endl;
-		std::cout << "Here:" << "\t" << m_n << "\t" << m_data << std::endl;
-		n = m_n;
-		for (int i = 0; i < m_n; i++) {
-			std::cout << m_data[i] << std::endl;
-			buf[i] = m_data[i];
-		}
+		n = m_nf;
+		for (uint32_t i = 0; i < m_nf; i++)
+			buf[i] = m_dataf[i];
 	}
 };
 
@@ -128,15 +126,12 @@ public:
 };
 
 class BinfReader : public DataReader {
-private:
-	float* m_data;
-	unsigned int m_n;
 public:
 	BinfReader(const std::string& filename) : DataReader(filename) {}
 	virtual ~BinfReader()
 	{
-		if (m_data != nullptr)
-			delete[] m_data;
+		if (m_data != nullptr)		
+			delete[] m_dataf;
 	}
 
 	bool Open() override {
@@ -147,18 +142,17 @@ public:
 	}
 
 	void Read() override {
-		m_in.read((char*)&m_n, sizeof(int));
-		float* m_data = new float[m_n];
-		m_in.read((char*)m_data, m_n * sizeof(float));
-		std::cout << "Here I am! " << m_n << "\t" << m_data << std::endl;
+		m_in.read((char*)&m_nf, sizeof(uint32_t));
+		m_dataf = new float[m_nf];
+		m_in.read((char*)m_dataf, m_nf * sizeof(float));
 	}
 
 	void Write(std::string filename) override
 	{
 		m_out.open(filename, std::ios::binary);
-		m_out.write((char*)&m_n, sizeof(uint32_t));
-		for (uint32_t i = 0; i < m_n; i++) {
-			m_out.write((char*)&m_data[i], sizeof(float));
+		m_out.write((char*)&m_nf, sizeof(uint32_t));
+		for (uint32_t i = 0; i < m_nf; i++) {
+			m_out.write((char*)&m_dataf[i], sizeof(float));
 		}
 		m_out.close();
 	}
@@ -213,9 +207,7 @@ int main() {
 	}
 	Reader->Open();
 	Reader->Read();
-	std::cout << std::endl << "input3.binf" << std::endl;
 	Reader->GetData(buf, n);
-	std::cout << std::endl << "Got data" << std::endl;
 	Reader->Write("output3.binf");
 
 	std::cout << (int)n << std::endl;
