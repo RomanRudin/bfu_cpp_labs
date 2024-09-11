@@ -1,13 +1,4 @@
 .git
 .vs
 .vscode
-Libraries
-sfml
-SFML-2.6.1
-Semester_2/8. SFML
-Semester_2/7. FileReader/ConsoleApplication1
-BasicGroup/Lab_2_7/Lab_2_7
-vs-projects
-BasicGrou
-*.sln
-x64
+*built_version
