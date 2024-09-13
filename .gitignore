@@ -2,3 +2,5 @@
 .vs
 .vscode
 *built_version
+*ext
+*SFML
