@@ -1,4 +1,4 @@
-#Description
+# Description
 Hi there! this is a repo, taht contains the legacy of AM AADA 2023 (ПМ ИИАД 2023) working quite hard to make all the labs from their first studying year. It contains only souce code, so u will need to build it yourself. 
 This is not an ideal code, probably, so if u find some mistakes, want to refactor existing code or to add your own realization of the task - u are welcome to make pull requests.
 
